@@ -9,3 +9,14 @@ Vue.use(Vuex)
 state 就是状态
 mutations 就是改变状态的函数 方法
 store.commit('aaa') 就可以理解为给store说这块有一个状态需要改变
+
+commit 2
+调试方法
+1 vue Chrome插件
+2 console.log()/error() alert() debuger
+3 引用cdn 绑定this 就可以在console下访问了
+比如 var app=new Vue()
+或者在组件中
+  mounted(){
+    window.vue=this;
+  },

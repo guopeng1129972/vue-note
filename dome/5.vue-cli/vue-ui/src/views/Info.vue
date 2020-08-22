@@ -17,6 +17,9 @@ export default {
     return{
     msg:store.state.count
   }},
+  mounted(){
+    window.vue=this;
+  },
   methods:{
     add(){
       console.log('add Event from info!')
