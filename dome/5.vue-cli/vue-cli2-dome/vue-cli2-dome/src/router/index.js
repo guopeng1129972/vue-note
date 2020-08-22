@@ -13,20 +13,22 @@ export default new Router({
     {
       path: '/',
       name: 'First',
-      component: First
-    },
-    {
-      path: '/a',
-      name: 'A',
-      component: A,
+      component: First,
       children: [
+        {
+          path: '/a',
+          name: 'A',
+          component: A
+        },
+        {
+          path: '/b',
+          name: 'B',
+          component: B
+        },
         { path: '/A1', component: A1 }
       ]
-    },
-    {
-      path: '/b',
-      name: 'B',
-      component: B
     }
+
+
   ]
 })
