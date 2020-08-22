@@ -1,5 +1,8 @@
 <template>
-  <div>first vue</div>
+  <div>
+    <router-link to="/a">转向a页面</router-link>
+    <router-link to="/b">转向B页面</router-link>
+  </div>
 </template>
 
 <script>
