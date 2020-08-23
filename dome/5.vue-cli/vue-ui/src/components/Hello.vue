@@ -1,31 +1,52 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
+<div class="hello">
+  <ul>
+    <li v-for="(item,index) in lists" :key="index" @click="conData(index)" :class="{active:index==current&&current!==''}">
+      {{item}}
+    </li>
+  </ul>
+  <button type="button" @click="add(target)">add</button>
+  <ul>
+    <li v-for="(item,index) in target" :key="index">
+      {{item}}
+    </li>
+  </ul>
+</div>
 </template>
 
 <script>
 export default {
   name: 'Hello',
-  props: {
-    msg: String,
+  color: '',
+  data() {
+    return {
+      current: '',
+      target: [],
+      lists: [1, 2, 3, 4, 5, 6]
+    }
+  },
+  methods: {
+    conData(index) {
+      this.current = index
+    },
+    add() {
+      if (!this.current) {
+        return
+      }
+      this.target.push(this.lists[this.current])
+      this.current = ''
+    }
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+
+<style lang="scss" scoped>
+li.active {
+  background-color: green;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+
 a {
   color: #42b983;
 }

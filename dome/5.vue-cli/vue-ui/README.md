@@ -22,4 +22,14 @@ commit 2
   },
 commit 3
 集成vue
-1.下载git
+1.下载git 一些git命令，先不看了
+
+单页面demo1
+
+安装调试
+yarn global add @vue/cli-service-global
+vue serve Hello.vue
+
+点击列表内容 然后添加到一个新的列表中去
+
+
