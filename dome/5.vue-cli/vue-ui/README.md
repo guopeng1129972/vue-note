@@ -20,3 +20,6 @@ commit 2
   mounted(){
     window.vue=this;
   },
+commit 3
+集成vue
+1.下载git
