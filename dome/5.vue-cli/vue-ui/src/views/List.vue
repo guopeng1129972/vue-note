@@ -1,3 +1,3 @@
 <template>
-  <div>info</div>
+  <div>list</div>
 </template>
