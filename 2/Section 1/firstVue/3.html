@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第一个vue应用</title>
-  <script src="./lib/vue.js"></script>
 </head>
 
 <body>
@@ -16,6 +15,7 @@
     <todo-list></todo-list>
   </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
   Vue.component('todo-item', {
     props: {
@@ -29,14 +29,20 @@
     <li>
         <span v-if="!del">{{title}}</span>
         <span v-else style='text-decoration:line-through;'>{{title}}</span>
-        <button v-show="!del">删除</button>
+        <button v-show="!del" @click.stop="handleClick">删除</button>
       </li>
-      `
+      `,
+    methods: {
+      handleClick() {
+        console.log('click del button')
+        this.$emit('delete', this.title)
+      }
+    },
   })
   Vue.component('todo-list', {
     template: `
     <ul>
-      <todo-item v-for="item in list" :title="item.title" :del="item.del"></todo-item>
+      <todo-item @delete="handleDelete" v-for="item in list" :title="item.title" :del="item.del"></todo-item>
     </ul>
     `,
     data: function () {
@@ -49,13 +55,17 @@
           del: true
         }]
       }
+    },
+    methods: {
+      handleDelete(value) {
+        console.log('handleDelete', value)
+      }
     }
   })
   var vm = new Vue({
     el: '#app',
     data: {
       message: 'hello vue',
-
     }
   })
 </script>

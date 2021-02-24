@@ -181,4 +181,43 @@ Vue.component('todo-item',{
 # node npm 略
 npm install -g @vue/cli
 ```
-转vue-demo/NOTE.MD
+## vue-cli
+- 入口文件 src/main.js
+- APP.vue 第一个单文件组件
+```js
+//这里面data是一个方法，返回一个对象，因为跟实例是在main.js,
+//而App.vue有可能会被复用
+data() {
+    return {
+      message: "hello vue",
+      list: [
+        {
+```
+- App.vue 中的组件只在App中生效
+```js
+export default {
+  name: "App",
+  components: {
+    TodoItem,
+    TodoList
+  },
+```
+- 如果你想让TodoItem全局使用，也是可以的，需要再全局注册
+  - main.js
+```js
+import TodoItem from "./components/TodoItem";
+Vue.component('todoItem',TodoItem);
+```
+## CSS组件化
+- todoItem.vue
+```js vue
+<template>
+<span class="red" v-if="!del">{{title}}</span>
+</template>
+//使用style scoped 会让元素的属性变为唯一的，不会污染别的地方
+<style scoped>
+.red{
+  color: red;
+}
+</style>
+```
