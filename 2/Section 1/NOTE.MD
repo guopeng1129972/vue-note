@@ -52,14 +52,17 @@ vue 中
     },
 ```
 
-##vue 事件修饰符
+## vue 事件修饰符
 ```js
 //阻止冒泡事件
         <button v-show="!del" @click.stop="handleClick">删除</button>
 ```
-在事件处理程序中调用 event.preventDefault() 或 event.stopPropagation() 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
-
-为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符。之前提过，修饰符是由点开头的指令后缀来表示的。
+在事件处理程序中调用 event.preventDefault() 或 event.stopPropagation() 
+是非常常见的需求。
+尽管我们可以在方法中轻松实现这点，但更好的方式是：
+方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符。
+之前提过，修饰符是由点开头的指令后缀来表示的。
 
 .stop
 .prevent
@@ -117,19 +120,51 @@ brew install exa
     });
   </script>
 ```
+# 05 | 组件基础及组件注册
 
-#4 插槽
-第一种
-直接使用slot标签表示
+- Vue.component(name,config)注册组件
+  - name 不能重复 要确保唯一性
+```js
+Vue.component('todo-item',{
+  data:function(){
+    //组件数据
+    return {}
+  },
+  methods:function(){
+    //组件方法
+    return {}
+  },
+// template 是模板字符串，如果需要用数据需要传入到这里
+  template:``
+
+})
+
+```
+
+# 07 | Vue组件的核心概：插槽
+插槽是一种复杂的函数，通过slot的方法传进去了一些参数，然后通过参数进行
+- 默认插槽
 ```html
-      <todo-item @delete="handleDelete" v-for="item in list" :title="item.title" :del="item.del"></todo-item>
-    </todo-list>
+        <span slot='pre-icon'>前置标签</span>
+        <span slot='suf-icon'>后置标签</span>
 ```
 ```js
-  Vue.component('todo-list', {
-    template: `
-    <ul>
-      <slot></slot>
-    </ul>
-    `,
+ template: `
+    <li>
+        <slot name='pre-icon'></slot>
+        <slot name='suf-icon'></slot> 
+      </li>
+      `,
 ```
+- 具名插槽
+```html
+ <template v-slot:pre-icon>
+          <span >前置标签</span>
+        </template>
+        <template v-slot:suf-icon>
+          <span >后置标签</span>
+        </template>
+```
+- 作用域插槽
+可以接受子组件发送的值
+
