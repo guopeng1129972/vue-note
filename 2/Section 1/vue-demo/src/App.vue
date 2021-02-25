@@ -1,18 +1,20 @@
 <template>
- <div id="app">
-    {{message}}
-    <div :id="message"></div>
-    <todo-list>
-      <todo-item @delete="handleDelete" v-for="item in list" :key='item.title' :title="item.title" :del="item.del">
-        <template v-slot:pre-icon="{value}">
-          <span >前置标签{{value}}</span>
-        </template>
-        <!-- <template v-slot:suf-icon>
+<div id="app">
+  <input v-model="message">
+  <input :value="message" @input="handleChange">
+  {{message}}
+  <div :id="message"></div>
+  <todo-list>
+    <todo-item @delete="handleDelete" v-for="item in list" :key='item.title' :title="item.title" :del="item.del">
+      <template v-slot:pre-icon="{value}">
+        <span>前置标签{{value}}</span>
+      </template>
+      <!-- <template v-slot:suf-icon>
           <span>后置标签</span>
         </template> -->
-      </todo-item>
-    </todo-list>
-  </div>
+    </todo-item>
+  </todo-list>
+</div>
 </template>
 
 <script>
@@ -28,8 +30,7 @@ export default {
   data() {
     return {
       message: "hello vue",
-      list: [
-        {
+      list: [{
           title: "课程1",
           del: false,
         },
@@ -40,12 +41,14 @@ export default {
       ],
     };
   },
-  methods:{
-   handleDelete(value) {
-        console.log('handleDelete', value)
-      }
+  methods: {
+    handleDelete(value) {
+      this.$emit('update:title')
+      console.log('handleDelete', value)
+    },
+    handleChange(e) {
+      this.message = e.target.value;
+    }
   }
 };
 </script>
-
-

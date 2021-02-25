@@ -221,3 +221,60 @@ Vue.component('todoItem',TodoItem);
 }
 </style>
 ```
+# 09 | 双向绑定和单向数据流不冲突
+- 通过v-model实现
+```html
+<!-- 1.简写 通过v-model -->
+<input v-model="message">
+<!-- 2.通过值绑定方法 -->
+<input :value="message" @input="handleChange">
+  {{message}}
+```
+```js
+methods: {
+  handleChange(e) {
+    this.message = e.target.value;
+  }
+}
+```
+说明vue的双向数据绑定其实，还是单向的数据流
+只是通过v-model的方式简化了代码
+- v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+  - text 和 textarea 元素使用 value property 和 input 事件；
+  - checkbox 和 radio 使用 checked property 和 change 事件；
+  - select 字段将 value 作为 prop 并将 change 作为事件。
+
+- input textarea checkbox select的不同用法 
+```html
+<!-- input -->
+<input v-model="message" placeholder="edit me">
+<p>Message is: {{ message }}</p>
+<!-- textarea -->
+<p style="white-space: pre-line;">{{ message }}</p>
+<textarea v-model="message" placeholder="add multiple lines"></textarea>
+<!-- checkbox -->
+<input type="checkbox" id="checkbox" v-model="checked">
+<label for="checkbox">{{ checked }}</label>
+<!-- select -->
+<div id="example-6">
+  <select v-model="selected" multiple style="width: 50px;">
+    <option>A</option>
+    <option>B</option>
+  </select>
+  <br>
+  <span>Selected: {{ selected }}</span>
+</div>
+```
+## .sync
+- 第一步：先用一句话解释
+.sync修饰符可以实现子组件与父组件的双向绑定，并且可以实现子组件同步修改父组件的值。
+一般情况下，想要实现父子组件间值的传递，通常使用的是 props 和自定义事件 $emit 。
+- 第二步：具体解释
+其中，父组件通过 props 将值传给子组件，子组件再通过 $emit 将值传给父组件，
+父组件通过事件j监听获取子组件传过来的值。
+如果想要简化这里的代码，可以使用.sync修饰符，实际上就是一个语法糖。
+这里 
+<Child :money="dataApp" v-on:update:money="dataApp = $event"/> 
+就相当于 
+<Child :money.sync="dataApp"/> 。
+
