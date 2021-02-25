@@ -278,3 +278,20 @@ methods: {
 就相当于 
 <Child :money.sync="dataApp"/> 。
 
+# 10 | 理解虚拟DOM及key属性的作用
+通过修改state给vue底层传递信息，由vue完成对dom的操作
+## vdom
+state + template = dom
+## vdom diff
+- 1.只对同层级进行比较
+  - 场景1：移动
+  - 场景2：删除新建
+  - 场景3：删除新建（同层级）
+  - 场景4：更新删除新建（无key）
+  - 场景5：移动（有key）转换为了场景1
+    - 无key同层就删除新建，有key就保留移动
+  - 场景6：插入(有key）
+    - 有key的标示算法就理解为插入，无key就会同层删除新建
+
+vue的vdom如何进行比较？
+有key无key的区别？
