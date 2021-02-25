@@ -317,3 +317,57 @@ Vue 对数组的 push 、pop、shift、unshift 等方法进行了修改，这些
 像 arr.length = val 这种修改数组长度的方式 不会触发更新； 
 这是 Object.defineProperty 局限性导致的， 它定义的是一个对象上某个值的表现，而非对象本身。
 而 Proxy 定义的是一个对象上行为的表现，Proxy是不局限于某个属性的，因此它能够追踪到对象中属性的增加和删除。
+
+# 12 | 合理应用计算属性和侦听器
+
+## 计算属性 computed
+可以写一些计算逻辑的属性
+- 减少模板中计算逻辑
+- 数据缓存
+  - 当数据没有变化时，不会去执行计算的过程
+- 依赖固定的数据类型（必须是响应式数据类型）
+```js
+  computed: {
+    // 计算属性的 getter
+    reversedMessage1: function() {
+      console.log("执行reversedMessage1");
+      return this.message
+        .split("")
+        .reverse()
+        .join("");
+    },
+```
+## 侦听器 watch
+用来监听数据变化的，监听某一个数据是否发生改变
+- watch可以执行任何逻辑，如函数节流，Ajax异步获取数据（操作dom 不要用）
+- 使用deep:true 子元素改变也会触发当前元素的watch
+- console.log("new: %s, old: %s", val, oldVal); 使用%s输出当前的字符串
+```js
+ watch: {
+    a: function(val, oldVal) {
+      this.b.c += 1;
+      console.log("new: %s, old: %s", val, oldVal);
+    },
+    "b.c": function(val, oldVal) {
+      this.b.d += 1;
+      console.log("new: %s, old: %s", val, oldVal);
+    },
+    "b.d": function(val, oldVal) {
+      this.e.f.g += 1;
+      console.log("new: %s, old: %s", val, oldVal);
+    },
+    e: {
+      handler: function(val, oldVal) {
+        this.h.push("😄");
+        console.log("new: %s, old: %s", val, oldVal);
+      },
+      deep: true
+    },
+    h(val, oldVal) {
+      console.log("new: %s, old: %s", val, oldVal);
+    }
+  }
+```
+## computed 与watch的关系？
+- computed能做的watch也能做，反之不行
+- 能用computed的尽量用computed
