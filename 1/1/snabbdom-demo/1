@@ -1,0 +1,35 @@
+import {h,init,thunk} from "snabbdom"
+// import {snabbdom} from 'snabbdom';
+console.log(h,init,thunk);
+
+
+//1 hello world
+//参数：数组，模块
+//返回值：patch函数，作用：对比两个VDOM的差异更新到真实的DOM
+let patch=init([])
+//第一个参数：标签+选择器
+//第二个参数：如果是字符串的话就是标签中的内容
+let vnode=h('div#container.cls','Hello World');
+let app=document.querySelector("#app");
+//第一个参数：可以是 DOM元素，内部会把DOM元素装换成VNode
+//第二个参数：VNode
+//return VNode
+
+//2 div中放置子元素 h1,p
+
+
+
+{
+  "name": "snabbdom-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.4",
+    "snabbdom": "^0.7.4"
+  }
+}
