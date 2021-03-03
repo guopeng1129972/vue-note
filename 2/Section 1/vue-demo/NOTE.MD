@@ -371,3 +371,22 @@ Vue 对数组的 push 、pop、shift、unshift 等方法进行了修改，这些
 ## computed 与watch的关系？
 - computed能做的watch也能做，反之不行
 - 能用computed的尽量用computed
+
+# 13 | 生命周期的应用场景和函数式组件
+## 生命周期
+创建阶段 销毁阶段 在组件的生命周期中只会执行一次， 更新阶段会执行多次
+### 创建阶段
+- 初始化事件和生命周期
+- beforeCreate
+- 数据观测，属性，侦听器配置等
+- created
+- 模板（template）编译到render
+- beforeMount
+- rander
+  - 生成vdom
+  - 挂载到真实dom
+- mounted
+  - 异步请求，操作DOM，定时器等
+
+### 更新阶段
+### 销毁阶段
