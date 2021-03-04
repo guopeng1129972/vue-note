@@ -292,7 +292,6 @@ state + template = dom
     - 无key同层就删除新建，有key就保留移动
   - 场景6：插入(有key）
     - 有key的标示算法就理解为插入，无key就会同层删除新建
-
 vue的vdom如何进行比较？
 有key无key的区别？
 
@@ -389,4 +388,17 @@ Vue 对数组的 push 、pop、shift、unshift 等方法进行了修改，这些
   - 异步请求，操作DOM，定时器等
 
 ### 更新阶段
+- 数据变化或者$forceUpdate强制刷新的时候
+- beforeUpdate ->移除已经添加的事件监听器等（万万不可更改依赖数据（一旦更改就会触发beforeUpdate，就会死循环））
+- rander
+- updated ->操作DOM添加事件监听器等（万万不可更改依赖数据）
 ### 销毁阶段
+- beforeDestory ->移除已经添加的事件监听器，计时器等
+- destroyed
+## 函数式组件
+- function:true
+- 无状态、无实例、没有this上下文、无生命周期
+### 作用
+在开发过程中
+- 做展示
+- 做临时变量
