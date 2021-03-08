@@ -402,3 +402,53 @@ Vue 对数组的 push 、pop、shift、unshift 等方法进行了修改，这些
 在开发过程中
 - 做展示
 - 做临时变量
+
+# 14 | 指令的本质是什么 
+## 内置指令 
+语法糖 标志位
+- v-text
+- v-html
+- v-show
+- v-if v-else-if v-else
+- v-for
+- v-bind 简写 :
+v-bind:key="num" 简写 :key="num" 
+- v-on 简写 @
+v-on:click="number=number+1"
+@:click="number=number+1"
+- v-pre 
+不渲染 直接输出内容
+- v-once 
+只渲染一次 
+## 自定义指令 
+- bind
+- inserted
+- update
+- componentUpdated
+- unbind
+```js
+ bind(){
+        console.log('bind');
+      },
+      inserted(el,binding){
+        el.appendChild(document.createTextNode(binding.value));
+        console.log("inserted",el,binding);
+      },
+      update(){
+        console.log('update');
+      },
+      componentUpdated(el,binding){
+        el.removeChild(el.childNodes[el.childNodes.length-1]);
+        el.appendChild(document.createTextNode(binding.value));
+        console.log("componentUpdated")
+      },
+      unbind(){
+        console.log("unbind");
+      }
+```
+
+**error: Unexpected console statement (no-console) at src/views/1.7/waizhizhiling.vue:32:9:**
+解决方法：修改package.json中的eslintConfig:{} 中的 “rules”:{}，增加一行代码: "no-console":"off"
+保存后 npm install 
+ 或者直接使用：
+window.console.log("...")
