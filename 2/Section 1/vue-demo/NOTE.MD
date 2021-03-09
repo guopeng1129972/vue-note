@@ -452,3 +452,75 @@ v-on:click="number=number+1"
 保存后 npm install 
  或者直接使用：
 window.console.log("...")
+
+# 15 | 常用高级特性provide/inject
+- 1.vue 不好实现孙节点给父节点传递数据，成本较高
+- 实现了子组件节点之间的通信，跨组件通信
+- provide节点提供数据，其他节点通过inject的方式注入数据
+- ChildrenA 中设置 provide
+```js
+ provide() {
+    this.theme = Vue.observable({
+      color: "blue"
+    });
+    return {
+      theme: this.theme
+    };
+  },
+```
+- ChildrenE 注入E中
+```js
+  inject:{
+    theme:{
+      default:()=>({})
+    }
+  },
+```
+- ChildrenF 注入F中
+```html
+<!-- 模板调用 -->
+  <h3 :style="{color:theme1.color}">F节点</h3>
+```
+```js
+// 挂载到当前组件如果与当前属性重名，可以用from特性
+  inject: {
+    theme1: {
+      from: "theme",
+      default: () => ({})
+    }
+  }
+```
+- ChildrenI 注入函数式组件I中
+通过injections的方式去取
+```html
+ <h3 :style="{color:injections.theme.color}">I节点</h3>
+```
+```js
+ inject:{
+    theme:{
+      default:()=>({})
+    }
+  }
+```
+- ChildrenC 中设置 provide
+这边EF节点颜色不会改变，因为设置C的provide，就不会往上寻找了
+```js
+  provide(){
+    return{
+      theme:{
+        color:'green'
+      }
+    }
+  }
+```
+- 注意：指定到provide的数据不是响应式的，所以需要绑定到一个具有响应式的内容上
+  - this中有很多属性，data,
+```js
+ provide() {
+    return {
+      theme: this
+    }
+  },
+```
+## 总结
+provide/inject 的inject类似于事件的冒泡机制

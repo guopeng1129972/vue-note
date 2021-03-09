@@ -16,6 +16,9 @@ export default {
       list: [{
         key: 1.7,
         name: '指令的本质是什么？',
+      },{
+        key: 1.8,
+        name: 'provie/inject',
       }]
     }
   }
