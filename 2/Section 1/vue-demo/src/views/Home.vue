@@ -19,6 +19,10 @@ export default {
       },{
         key: 1.8,
         name: 'provie/inject',
+      },
+      {
+        key: 1.9,
+        name: '如何优雅的获取跨层级组件实例',
       }]
     }
   }

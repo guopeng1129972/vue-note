@@ -524,3 +524,43 @@ window.console.log("...")
 ```
 ## 总结
 provide/inject 的inject类似于事件的冒泡机制
+
+# 16 | 如何优雅地获取跨层级组件实例（拒绝递归）
+## 普通的获取组件实例
+- 如果是普通的元素，ref="p"获取的是真实的dom元素
+- 如果是自定义组件，那么获取到的就是这个组件的实例了。
+this.$ref.XXXX可以获取当前组件上下文的实例。
+如果说要获取跨层级的组件的实例？那就很不方便了。
+如果要获取父组件的，可以通过parent.refs.
+获取子组件的children.refs
+如果层级多的时候，10级20级别的。那就很不方便了。
+- ChildrenA 设置 provide
+```js
+  provide() {
+    return {
+      setChildrenRef:(name,ref)=>{
+        this[name]=ref;
+      },
+      getChildrenRef:name=>{
+        return this[name];
+      },
+      getRef:()=>{
+        return this;
+      }
+    }
+  },
+```
+- ChildrenE 中调用父级的 setChildrenRef ，绑定this的name
+```html
+<h3 v-ant-ref="c =>setChildrenRef('childrenE',c)">E节点</h3>
+```
+调用 inject 注入
+```js
+  inject: {
+    setChildrenRef: {
+      default: () => {}
+    }
+  }
+```
+## 总结
+避免使用回调的跨层级获取元素
