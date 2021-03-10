@@ -564,3 +564,52 @@ this.$ref.XXXX可以获取当前组件上下文的实例。
 ```
 ## 总结
 避免使用回调的跨层级获取元素
+
+# 17 | template和JSX的对比以及它们的本质
+- template
+模板语法
+ ```html
+ <span>{{msg}}</span>
+ ```
+- JSX
+js语法扩展
+数据绑定使用单引号
+```html
+<span>{msg}</span>
+```
+
+## 注意
+- VNodes :vnodes的方式执行事件
+```html
+<VNodes :vnodes="getAnchoredHeading(4)" />
+```
+```js
+methods: {
+    getAnchoredHeading(level){
+      const Tag=`h${level}`;
+      return <Tag>Hello Vue</Tag>
+    }
+  }
+```
+- jsx转换成js的写法
+```jsx
+ render: function (h) {
+    const Tag=`h${this.level}`;
+    console.log(this.$slots.default);
+    return <Tag>{this.$slots.default}</Tag>
+  }
+```
+```js
+ render: function (createElement) {
+    return createElement(
+      "h" + this.level, //标签名称
+      this.$slots.default //子元素数组
+    )
+```
+- this.$slots.default 是元素的innerHTML
+## 总结
+不管是JSX还是template，原理上都是语法糖
+构成元素的方法都是
+```js
+createElement("span",`${this.msg}`)
+```
