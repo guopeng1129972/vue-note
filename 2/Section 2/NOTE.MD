@@ -28,6 +28,4 @@ Vuex 提供数据 `State` 来驱动我们的视图（`Vue Components`）的渲�
 ### Vuex是通过什么方式提供响应式数据的？
 
 
-# 19 | 如何在Vue中使用Vuex
-```bash
-```
+# 20 | Vuex核心概念及底层原理

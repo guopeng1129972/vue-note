@@ -29,3 +29,6 @@ dispatch increment 到 Vuex.Store.actions
 - getters 起到一个缓存的作用
 直接调用，与获取`state`一样 
 this.$store.getters.doubleCount
+
+## 问题： $store.是如何挂载到实例this上去的？
+
