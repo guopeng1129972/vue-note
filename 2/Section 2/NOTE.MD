@@ -29,3 +29,18 @@ Vuex 提供数据 `State` 来驱动我们的视图（`Vue Components`）的渲�
 
 
 # 20 | Vuex核心概念及底层原理
+
+* [Vuex核心概念及底层原理](/vuex-demo2/NOTE.MD)
+# 21 | Vuex最佳实践
+## 核心概念
+- State
+this.$store.state.xxx  mapState取值
+- Getters
+this.$store.getters.xxx mapGetters取值
+- Mutation
+this.$store.commit("xxx") mapMutations赋值
+- Actions
+this.$store.dispatch("xxx") mapActions赋值
+- Module
+## 使用常量代替Mutation事件类型
+![使用常量代替Mutation事件类型](/img/3.jpg)
