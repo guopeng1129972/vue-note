@@ -5,7 +5,7 @@
 - State
 this.$store.state.xxx  mapState取值
 - Getters
-this.$store.getters.xxx mapGetters取值
+this.$store.getters.xxx mapGetters取值®
 - Mutation
 this.$store.commit("xxx") mapMutations赋值
 - Actions
@@ -46,3 +46,5 @@ export default {
 - store/mutation-types.js
 定义了一些mutation的变量，这样的好处在于比较规范
 ## 问题：扩展购物车示例，提供单次添加1-N的数量到购物车的功能
+
+
