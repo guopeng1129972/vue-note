@@ -37,3 +37,17 @@ new Vue({
 ```
 <router-view></router-view> 写在什么地方 routes.js中的
 {path:'/foo',component:RouterDemo,name:'1'} 就渲染到什么地方
+
+
+# 23 | 选择何种模式的路由及底层原理
+
+## 路由类型
+- Hash模式 不好看，无法使用锚点定位
+- History 模式 需要后端配合，IE9不兼容（可以使用强制刷新处理）
+  - 就是在IE9的模式下，不采用AJAX的方式去获取，而是通过强制刷新页面的方式
+## 路由底层逻辑
+![路由底层逻辑](./img/1.jpg)
+>router-link,$router.push,a href,浏览器刷新、后退,手动更改URL
+触发 updateRoute
+触发响应式数据 Vue.util.defineReactive 把_route的数据变成响应式的
+执行router-view 根据URL匹配想要渲染的组件
