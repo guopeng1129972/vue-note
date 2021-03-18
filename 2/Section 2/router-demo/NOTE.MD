@@ -103,3 +103,22 @@ new Vue({
 单页应用在初始页面加载时被完全加载，然后页面区域被替换或更新为按需从服务器加载的新页面片段。为避免过度下载未使用的功能，单页应用通常会逐渐下载更多内容，如所需要的功能、页面的一小块，或者完整的一页。
 
 ## 问题：如何不使用SSR实现SEO？
+
+# 25 | Nuxt核心原理是什么？
+## SSR或者VUE SSR的渲染流程图
+![SSR渲染流程](./img/2.jpg)
+- 1.打包时，提供两个入口文件
+  - 1个是serve端使用的 Serve entry
+    - 主要返回服务端返回的Vue实例
+  - 1个是Client端使用的 Client entry
+    - 将Vue实例挂载到指定的DOM元素上
+- 2.webpack打包
+- 3.node Server
+  - 在Node Server中 Server Bundle -> Bundle Renderer
+  - 在Browser中 ：Client Bundle = Hydrate(摄入)> HTML
+## SSR渲染简易流程
+![SSR渲染简易流程](./img/3.jpg)
+- spa
+Client =请求>Server =req - res>index.html
+- ssr 优化
+Client =请求>Server= req - RenderToString(app) res >index.html
