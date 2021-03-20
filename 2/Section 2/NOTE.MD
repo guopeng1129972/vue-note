@@ -48,3 +48,19 @@ this.$store.dispatch("xxx") mapActions赋值
 
 # 26 | UI组件库对比：Element UI、Ant Design Vue、iView
 ![常用的组件库](/img/4.jpg)
+
+# 27 | 提升开发效率和体验的常用工具：ESLint、Prettier、vue-devtools
+## 1.Vetur
+>- 语法高亮
+>- 标签补全、模板生成
+>- Lint 检查
+>- 格式化
+## 2.ESlint
+>- 代码规范
+>- 错误检查
+## Prettier 
+>- 代码美化
+## 3.vue-devtools
+>- 集成Vuex
+>- 可远程调试
+>- 性能分析
