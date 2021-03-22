@@ -64,3 +64,13 @@ this.$store.dispatch("xxx") mapActions赋值
 >- 集成Vuex
 >- 可远程调试
 >- 性能分析
+
+# 28 | 单元测试的重要性及其使用
+## 重要性
+>- 保证研发质量
+>- 提高项目的稳定性
+>- 提高开发速度
+## 使用方式(用的jest)
+>- jest 或mocha 
+>- @vue/test-utils
+>- sinon
