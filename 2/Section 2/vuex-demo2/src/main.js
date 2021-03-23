@@ -27,14 +27,17 @@ const store = new Vuex.Store({
   //     }, 3000)
   //   }
   // },
-  // getters:{
-  //   doubleCount(state){
-  //     return state.count * 2
-  //   }
-  // }
+  // 添加 getters方法 添加 getters
+  getters:{
+    doubleCount(state){
+      return state.count * 2
+    }
+  }
 })
-Vue.prototype.$store=store;
+// 添加 getter 删除  Vue.prototype.$store=store;
+// Vue.prototype.$store=store;
 new Vue({
-  // store,
+  // 添加 getter 添加 store,
+  store,
   render: h => h(App),
 }).$mount('#app')

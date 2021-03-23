@@ -74,3 +74,25 @@ this.$store.dispatch("xxx") mapActions赋值
 >- jest 或mocha 
 >- @vue/test-utils
 >- sinon
+
+
+# 29 | 生态篇习题解答（上）
+
+## 1.Vuex是通过什么方式提供响应式数据的？
+>- 创建了一个Vue实例来动态
+new Vue({})
+## 2.扩展简化版的min-vuex,实现getters,并实现vuex的方式注入$store
+>- 计算属性computed实现getters缓存
+>- beforeCreate 中混入$Store的获取方式
+```js
+// for [key,fn] of  Object.entries(getters) 遍历标准用法 Object.entries() 将对象中的键值对返回成一个数组；
+for (let [key, fn] of Object.entries(getters)) {
+  computed[key] = function () { return fn(store.state, store.getters); };
+  // defineProperties 方法直接在一个对象上定义 一个或多个 新的属性或修改现有属性
+  Object.defineProperties(store.getters, key, {
+    get: function () { return store._vm[key]; },
+  });
+}
+```
+>- install是use之后会触发的内容
+## 扩展购物车示例，提供单次添加1-N的数量到购物车的功能
