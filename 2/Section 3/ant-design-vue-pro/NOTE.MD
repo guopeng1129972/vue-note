@@ -39,7 +39,7 @@ vue-cli 集成了webpack和babel的配置
 当前最新版本，全局引入antd就是按需加载，因此对于babel的这个配置没必要，甚至还会出错
 ```js
 module.exports = {
-  presets: ["@vue/cli-plugin-babel/preset"],//cli 默认
+  presets: ["@vue/cli-plugin-babel/preset"],//cli 默认 配置默认即可
   "plugins": [
     ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", "style": "css" }] // `style: true` 会加载 less 文件
   ]
@@ -47,3 +47,27 @@ module.exports = {
 ```
 
 # 34 | 如何设计一个高扩展性的路由
+## 实现登录与注册
+
+```js
+component: resolve => require(["@/layouts/UserLayout"], resolve), //异步加载
+component: () =>import(/* webpackChunkName: "layout" */ "../layouts/UserLayout"), //异步加载 webpack分包 注释会被webpack生成打包的名字
+component: {render: h => h("router-view")}, //同步加载
+// 前两个异步加载 第二个异步加载会被webpack分包
+
+```
+## 添加加载动画效果
+就是页面顶端的那一条进度线
+```bash
+npm install nprogress
+```
+>- src/router/index.js
+```js
+router.beforeEach((to,from,next) => {
+  Nprogress.start()
+  next()
+});
+router.afterEach(()=>{
+  Nprogress.done()
+})
+``
