@@ -70,4 +70,41 @@ router.beforeEach((to,from,next) => {
 router.afterEach(()=>{
   Nprogress.done()
 })
-``
+```
+
+# 35 | 实现一个可动态改变的页面布局
+在官网上搜索控件，然后引入代码，修改属性
+https://www.antdv.com/components/radio-cn/
+## src/layouts/BasicLayout.vue
+自定义控件 整体的布局
+collapsed
+```html
+<!-- a-layout-sider 侧边栏属性 :trigger="null" 不显示按钮 -->
+<a-layout-sider :trigger="null" v-model="collapsed" collapsible>
+<!-- 自定义侧边栏按钮 -->
+<a-icon
+  class="trigger"
+  :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+  @click="collapsed = !collapsed"
+></a-icon>
+```
+
+## src/components/SettingDrawer/index.vue
+自定义控件 右侧抽屉
+注意这里取值是 $route.query 赋值是 this.$router.push 的，而且其中的query修改的时候用的也是  ...this.$route.query,
+>- 取不到值默认
+ :value="$route.query.navTheme || 'dark'"
+>- 修改触发事件，传入事件当前值
+ @change="(e) => handleSettingChange('navTheme', e.target.value)"
+>- 传值修改方法
+```js
+  handleSettingChange(type, value) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          [type]: value
+        }
+      })
+    }
+  },
+```

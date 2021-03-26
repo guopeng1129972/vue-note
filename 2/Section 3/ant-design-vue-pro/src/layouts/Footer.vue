@@ -1,6 +1,6 @@
 
 <template>
-  <div>footer</div>
+  <div> Ant Design pro ©2021 Created by GuoPeng</div>
 </template>
 
 <script>

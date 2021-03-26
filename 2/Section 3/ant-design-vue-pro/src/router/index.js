@@ -110,7 +110,10 @@ const router = new VueRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  Nprogress.start()
+  // 添加判断，如果是当前页面的路由修改，不触发进度条
+  if(to.path!=from.path){
+    Nprogress.start()
+  }
   next()
 });
 router.afterEach(() => {
