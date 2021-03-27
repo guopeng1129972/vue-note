@@ -147,3 +147,33 @@ export default {
 ```html 
 :type="props.menuInfo.meta.icon"
 ```
+
+# 37 | 如何使用路由管理用户权限
+> - src/utils/auth.js 权限校验
+```js
+export function getCurrentAuthority() {
+  // 模拟获取当前用户
+export function check(authority) {
+  // 检查当前用户是否有权限
+export function isLogin() {
+  // 检查当前用户是否登录
+```
+> - src/router/index.js
+```bash
+npm install lodash
+```
+使用 notification 模块完成 通知提示框的调用
+```js
+import { notification } from "ant-design-vue";
+ notification.error({
+        message: "403",
+        description: "没有权限，请联系管理员",
+      });
+// 配置当前路由的访问权限 authority: ["user", "admin"] 
+ {
+    path: "/",
+    meta: { authority: ["user", "admin"] },
+    component: () =>
+```
+> - src/views/403.vue 
+创建的一个403 无权限访问的页面
