@@ -177,3 +177,65 @@ import { notification } from "ant-design-vue";
 ```
 > - src/views/403.vue 
 创建的一个403 无权限访问的页面
+
+# 38 | 更加精细化的权限设计（权限组件、权限指令）
+> - 用了Vue实例的组件就可以用use注册组件
+
+## src/components/Authorized.vue
+使用render函数写的函数式组件
+```js
+  props: {
+    authority: {
+      type: Array,
+      required: true,
+    },
+  },
+  render(h, context) {
+    // 解构 context 提取 props, scopedSlots
+    const { props, scopedSlots } = context;
+    // 返回当前check的结果，如果为true 则渲染 scopedSlots.default() 否则 不动
+    return check(props.authority) ? scopedSlots.default() : null;
+  },
+};
+```
+## src/components/direct/auth.js
+使用全局的方式注册组件（全局注册的组件在全局都可以调用）
+```js
+import { check } from "../../utils/auth";
+// vue注册全局组件
+function install(Vue, options = {}) {
+  // <a-icon
+  // v-auth="['admin']" 调用方式
+  Vue.directive(options.name || "auth", {
+    inserted(el, binding) {
+      if (!check(binding.value)) {
+        // 如果不是admin,就删除当前组件，在 parentNode 上找 el
+        el.parentNode && el.parentNode.removeChild(el);
+      }
+    },
+  });
+}
+export default { install };
+```
+## src/layouts/BasicLayout.vue
+两种使用注册的组件的方式（都有利弊）
+```html
+<!-- 1.全局注册的方式 -->
+<a-icon
+        v-auth="['admin']"
+<!-- 2.插件式注册组件的方式 -->
+<Authorized :authority="['admin']">
+  <SettingDrawer />
+</Authorized>
+```
+
+## src/main.js
+```js
+import Authorized from "./components/Authorized";
+import Auth from "./components/directives/auth";
+
+// 没有用到Vue实例的注册方式
+Vue.component("Authorized", Authorized);
+// 用到Vue实例的注册方式
+Vue.use(Auth);
+```
