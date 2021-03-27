@@ -108,3 +108,42 @@ collapsed
     }
   },
 ```
+
+# 36 | 如何将菜单和路由结合
+
+## 一个概念
+> - 带default-xxx的这种设计，类似于受控组件的形式，是组件库给定的一个初始值
+default-selected-keys
+default-open-keys
+
+selected-keys
+open-keys
+## 实现一个根据父组件传值改变子组件样式的实例
+> - src/layouts/BasicLayout.vue 父组件给子组件传值
+  <SiderMenu :theme="navTheme" :collapsed="collapsed" />
+
+> - src/layouts/SiderMenu.vue 子组件watch值的修改 作为props传递给孙组件
+```js
+  watch: {
+    collapsed: function (val) {
+      this.openKeys = val ? [] : this.openKeysMap[this.$route.path];
+    },
+  },
+    props: {
+    collapsed: {
+      type: Boolean,
+      default: false,
+    },
+  },
+```
+> - src/layouts/SubMenu.vue   
+继承从父级传来的props
+```js
+export default {
+  props: ["menuInfo"],
+};
+```
+使用
+```html 
+:type="props.menuInfo.meta.icon"
+```

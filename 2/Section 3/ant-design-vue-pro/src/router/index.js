@@ -8,9 +8,15 @@ import NotFound from "../views/404.vue";
 
 Vue.use(VueRouter);
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
+
 const routes = [
   {
     path: '/user',
+    hideInMenu:true,
     component: () => import(/* webpackChunkName: "layout" */  "../layouts/UserLayout.vue"),
     children: [
       {
@@ -43,11 +49,13 @@ const routes = [
       {
         path: '/dashboard',
         name: "dashboard",
+        meta:{icon:"dashboard",title:"仪表盘"},
         component: { render: h => h("router-view") },
         children: [
           {
             path: "/dashboard/analysis",
             name: "analysis",
+            meta:{title:"分析页"},
             component: () => import(/* webpackChunkName: "Dashboard" */ "../views/Dashboard/Analysis.vue"),
           }
         ]
@@ -56,6 +64,7 @@ const routes = [
       {
         path: '/form',
         name: "form",
+        meta:{icon:"form",title:"表单"},
         component: { render: h => h("router-view") },
         children: [
           {
@@ -65,12 +74,15 @@ const routes = [
           {
             path: "/form/basic-form",
             name: "basicform",
-            component: () => import(/* webpackChunkName: "Froms" */ "../views/Froms/BasicForm.vue"),
+            meta:{title:"基础表单"},
+            component: () => import(/* webpackChunkName: "Forms" */ "../views/Forms/BasicForm.vue"),
           },
           {
             path: "/form/step-form",
             name: "stepform",
-            component: () => import(/* webpackChunkName: "Froms" */ "../views/Froms/StepForm"),
+            hideChildrenMenu:true,
+            meta:{title:"分布表单"},
+            component: () => import(/* webpackChunkName: "Forms" */ "../views/Forms/StepForm"),
             children: [
               {
                 path: "/form/step-form",
@@ -79,17 +91,17 @@ const routes = [
               {
                 path: "/form/step-form/info",
                 name: "info",
-                component: () => import(/* webpackChunkName: "Froms" */ "../views/Froms/StepForm/Step1.vue"),
+                component: () => import(/* webpackChunkName: "Forms" */ "../views/Forms/StepForm/Step1.vue"),
               },
               {
                 path: "/form/step-form/confirm",
                 name: "confirm",
-                component: () => import(/* webpackChunkName: "Froms" */ "../views/Froms/StepForm/Step2.vue"),
+                component: () => import(/* webpackChunkName: "Forms" */ "../views/Forms/StepForm/Step2.vue"),
               },
               {
                 path: "/form/step-form/result",
                 name: "result",
-                component: () => import(/* webpackChunkName: "Froms" */ "../views/Froms/StepForm/Step3.vue"),
+                component: () => import(/* webpackChunkName: "Forms" */ "../views/Forms/StepForm/Step3.vue"),
               }
             ]
           }
@@ -100,6 +112,7 @@ const routes = [
   {
     path: "*",
     name: "404",
+    hideInMenu:true,
     component: NotFound,
   },
 ];
@@ -111,7 +124,7 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   // 添加判断，如果是当前页面的路由修改，不触发进度条
-  if(to.path!=from.path){
+  if(to.path!==from.path){
     Nprogress.start()
   }
   next()
