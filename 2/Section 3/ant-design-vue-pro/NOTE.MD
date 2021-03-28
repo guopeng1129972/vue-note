@@ -239,3 +239,81 @@ Vue.component("Authorized", Authorized);
 // 用到Vue实例的注册方式
 Vue.use(Auth);
 ```
+
+# 39 | 如何在组件中使用ECharts、Antv等其他第三方库
+```bash
+cnpm install echarts
+```
+## 一个问题 两个方案
+> - 1
+如果consle提示：TypeError: Cannot read property 'init' of undefined"，
+请在mounted()语句块开始加一句：var echarts = require("echarts"); 
+同时去掉视频中组件中对应的import语句。这和echarts版本有关。
+> - 2
+import * as echarts from "echarts";
+## 监听chartDom的大小变化
+```bash
+cnpm install resize-detector
+```
+
+## src/components/Chart.vue
+> - 如何在vue中gc中删除？性能优化方式
+  beforeDestroy() {
+    // 在组件销毁时，移除监听，在GC中删除
+    removeListener(this.$refs.chartDom, this.resize);
+    this.chart.dispose();
+    this.chart = null;
+  },
+
+> - 使用echarts性能优化，如何监听图表渲染位置？让其在最后渲染到正确的位置上？
+
+```js
+import * as echarts from "echarts";
+import { removeListener, addListener } from "resize-detector";
+import debounce from "lodash/debounce";
+export default {
+//  1. 创建阶段
+  created() {
+    this.resize = debounce(this.resize, 300);
+  },
+  watch: {
+    // 普通监听
+    option(val) {
+      this.chart.setOption(val);
+    },
+    // 深度监听 深度监听很耗费性能，另一个方式是还是使用普通监听 在父组件中数据变化之后重新赋值
+    // option: {
+    //   handler(val) {
+    //     this.chart.setOption(val);
+    //   },
+    //   deep: true,
+    // },
+  },
+  // 2. mounted阶段添加 addListener 从resize-detector中导入的
+  mounted() {
+    this.renderChart();
+    addListener(this.$refs.chartDom, this.resize);
+  },
+  // 3. 在beforeDestroy中删除
+    beforeDestroy() {
+    // 在组件销毁时，移除监听，在GC中删除
+    removeListener(this.$refs.chartDom, this.resize);
+    this.chart.dispose();
+    this.chart = null;
+  },
+
+```
+> - 性能优化方式 深度监听的优化方式？
+ 深度监听 深度监听很耗费性能，
+ 另一个方式是还是使用普通监听，
+ 在父组件中数据变化之后重新赋值
+```js
+    this.interval = setInterval(() => {
+      // 这里访问data的chartOption数据的调用方法是 this.chartOption,而不是 this.data.chartOption
+      this.chartOption.series[0].data = this.chartOption.series[0].data.map(
+        () => random(100)
+      );
+      // 数据变化重新赋值
+      this.chartOption = { ...this.chartOption };
+    }, 3000);
+```

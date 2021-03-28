@@ -7,7 +7,7 @@ import store from "./store";
 import "ant-design-vue/dist/antd.less";
 // import "ant-design-vue/lib/button/style"
 import Authorized from "./components/Authorized";
-import Auth from "./components/directives/auth";
+import Auth from "./components/direct/auth";
 Vue.config.productionTip = false;
 // 全局注册 Antd
 Vue.use(Antd);
