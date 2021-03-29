@@ -372,3 +372,42 @@ cnpm install axios --save-dev
     },
   },
 ```
+
+# 41 | 如何与服务端进行交互（Axios）
+
+## 创建 ant-design-vue-pro-server
+../ant-design-vue-pro-server
+## package.json
+```bash
+cnpm install cross-env
+```
+添加serve:no-mock 来区别，是不是用mock，不用的话从服务器获取
+```js
+"scripts": {
+    "serve": "vue-cli-service serve",
+    "serve:no-mock": "cross-env MOCK=node vue-cli-service serve",
+```
+## 配置jsx完成对提示框样式的自定义
+https://github.com/vuejs/jsx/
+```bash
+npm install @vue/babel-preset-jsx @vue/babel-helper-vue-jsx-merge-props
+```
+>- Then add the preset to babel.config.js:
+```js
+module.exports = {
+  presets: ['@vue/babel-preset-jsx'],
+}
+```
+
+## src/utils/require.js
+封装axios ，使用jsx 就是为啥要装jsx的babel
+```js
+// 使用封装axios的方法
+require({
+  url: "http://localhost:3000/api/dashboard/chart",
+  methods: "get",
+  params: { ID: 12345 },
+}).then((response) => {
+```
+## 创建服务端代码
+../ant-design-vue-pro-server/NOTE.MD

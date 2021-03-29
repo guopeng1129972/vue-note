@@ -3,8 +3,9 @@
 </template>
 
 <script>
+import require from "../../utils/require";
 import Chart from "../../components/Chart";
-import axios from "axios";
+
 export default {
   components: { Chart },
   data() {
@@ -20,31 +21,33 @@ export default {
   },
   methods: {
     getChartData() {
-      // 用axios获取数据
-      axios
-        .get("api/dashboard/chart", { params: { ID: 12345 } })
-        .then((response) => {
-          this.chartOption = {
-            title: {
-              text: "ECharts 入门示例",
+      // 使用封装axios的方法
+      require({
+        url: "http://localhost:3000/api/dashboard/chart",
+        methods: "get",
+        params: { ID: 12345 },
+      }).then((response) => {
+        this.chartOption = {
+          title: {
+            text: "ECharts 入门示例",
+          },
+          tooltip: {},
+          legend: {
+            data: ["销量"],
+          },
+          xAxis: {
+            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+          },
+          yAxis: {},
+          series: [
+            {
+              name: "销量",
+              type: "bar",
+              data: response.data,
             },
-            tooltip: {},
-            legend: {
-              data: ["销量"],
-            },
-            xAxis: {
-              data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-            },
-            yAxis: {},
-            series: [
-              {
-                name: "销量",
-                type: "bar",
-                data: response.data,
-              },
-            ],
-          };
-        });
+          ],
+        };
+      });
     },
   },
   beforeDestroy() {
