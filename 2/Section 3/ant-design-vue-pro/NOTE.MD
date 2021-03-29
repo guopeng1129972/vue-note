@@ -411,3 +411,53 @@ require({
 ```
 ## 创建服务端代码
 ../ant-design-vue-pro-server/NOTE.MD
+
+# 42 | 创建一个普通表单
+官网复制表单
+## src/views/Forms/BasicForm.vue
+根据官网文档添加属性 并bind 
+validateStatus: 校验状态，可选 ‘success’, ‘warning’, ‘error’, ‘validating’。
+help：设置校验文案。
+```html
+<a-form-item
+  :validateStatus="fieldAStatus"
+  :help="fieldAHelp"
+>
+<!-- 动态绑定值 -->
+<a-input v-model="fieldA" placeholder="input placeholder" />
+<!-- 添加 Submit的事件handleSubmit -->
+<a-button type="primary" @click="handleSubmit"> Submit </a-button>
+```
+```js
+export default {
+  data() {
+    return {
+      fieldA: "",
+      fieldAStatus: "",
+      fieldAHelp: "必须大于5个字符",
+    };
+  },
+   watch: {
+    //  watch数据变化
+    fieldA(val) {
+      if (val.length <= 5) {
+        this.fieldAStatus = "error";
+        this.fieldAHelp = "必须大于5个字符";
+      } else {
+        this.fieldAStatus = "";
+        this.fieldAHelp = "";
+      }
+    },
+  },
+   methods: {
+    //  添加Submit的事件handleSubmit
+    handleSubmit() {
+      if (this.fieldA.length <= 5) {
+        this.fieldAStatus = "error";
+        this.fieldAHelp = "必须大于5个字符";
+      } else {
+        console.log({ fieldA: this.fieldA, fieldB: this.fieldB });
+      }
+    },
+  },
+```
