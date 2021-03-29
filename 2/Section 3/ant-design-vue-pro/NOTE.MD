@@ -317,3 +317,58 @@ export default {
       this.chartOption = { ...this.chartOption };
     }, 3000);
 ```
+# 40 | 如何高效地使用Mock数据进行开发
+## vue.config.js
+配置 webpack
+```js
+  devServer: {
+    proxy: {
+      // http://localhost:8080/dashboard/api/dashboard/chart?ID=12345
+      "/api": {
+        target: "http://localhost:8080",
+        bypass: function (req, res) {
+          if (req.headers.accept.indexOf("html") !== -1) {
+            console.log("Skipping proxy for browser request.");
+            return "/index.html";
+          } else {
+            // 处理url
+            const name = req.path.split("/api/")[1].split("/").join("_");
+            // 引入请求的数据  const mock = require(`./mock/dashboard_chart.js`); 
+            const mock = require(`./mock/${name}`);
+            const result = mock(req.method);
+            delete require.cache[require.resolve(`./mock/${name}`)];
+            return res.send(result);
+          }
+        },
+      },
+    },
+  },
+
+```
+## mock/dashboard_chart.js
+
+```bash
+cnpm install axios --save-dev
+```
+## src/views/Dashboard/Analysis.vue
+```js
+ methods: {
+    getChartData() {
+      // 用axios获取数据
+      axios
+        .get("api/dashboard/chart", { params: { ID: 12345 } })
+        .then((response) => {
+          this.chartOption = {
+        //  ....
+            series: [
+              {
+                name: "销量",
+                type: "bar",
+                data: response.data,
+              },
+            ],
+          };
+        });
+    },
+  },
+```
