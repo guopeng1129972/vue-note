@@ -1,5 +1,5 @@
 <template>
-  <a-form :layout="formLayout">
+  <a-form :layout="formLayout" :form="form">
     <a-form-item
       label="Form Layout"
       :label-col="formItemLayout.labelCol"
@@ -18,18 +18,27 @@
       label="Field A"
       :label-col="formItemLayout.labelCol"
       :wrapper-col="formItemLayout.wrapperCol"
-      :validateStatus="fieldAStatus"
-      :help="fieldAHelp"
     >
-      <a-input v-model="fieldA" placeholder="input placeholder" />
+      <!-- 使用 v-decorator 添加监听 -->
+      <a-input
+        v-decorator="[
+          'fieldA',
+          {
+            // 使用initialValue 的初始值，和default的形式一样，只会生效一次
+            initialValue: fieldA,
+            //required: true 表示必填
+            rules: [{ required: true, min: 6, message: '必须大于5个字符' }],
+          },
+        ]"
+        placeholder="input placeholder"
+      />
     </a-form-item>
     <a-form-item
       label="Field B"
       :label-col="formItemLayout.labelCol"
       :wrapper-col="formItemLayout.wrapperCol"
-      :validateStatus="fieldBStatus"
     >
-      <a-input v-model="fieldB" placeholder="input placeholder" />
+      <a-input v-decorator="['fieldB']" placeholder="input placeholder" />
     </a-form-item>
     <a-form-item :wrapper-col="buttonItemLayout.wrapperCol">
       <a-button type="primary" @click="handleSubmit"> Submit </a-button>
@@ -40,25 +49,13 @@
 <script>
 export default {
   data() {
+    // 将库中的this.$form复制到当前组件，操作数据
+    this.form = this.$form.createForm(this);
     return {
       formLayout: "horizontal",
-      fieldA: "",
+      fieldA: "hello",
       fieldB: "",
-      fieldAStatus: "",
-      fieldAHelp: "必须大于5个字符",
-      fieldBStatus: "",
     };
-  },
-  watch: {
-    fieldA(val) {
-      if (val.length <= 5) {
-        this.fieldAStatus = "error";
-        this.fieldAHelp = "必须大于5个字符";
-      } else {
-        this.fieldAStatus = "";
-        this.fieldAHelp = "";
-      }
-    },
   },
   computed: {
     formItemLayout() {
@@ -79,17 +76,27 @@ export default {
         : {};
     },
   },
+  mounted() {
+    setInterval(() => {
+      // 设置值用 api的 this.form.setFieldsValue({key:value})
+      this.form.setFieldsValue({
+        fieldA: `hello ${Math.floor(Math.random() * 100)}`,
+      });
+    }, 2000);
+  },
   methods: {
     handleFormLayoutChange(e) {
       this.formLayout = e.target.value;
     },
     handleSubmit() {
-      if (this.fieldA.length <= 5) {
-        this.fieldAStatus = "error";
-        this.fieldAHelp = "必须大于5个字符";
-      } else {
-        console.log({ fieldA: this.fieldA, fieldB: this.fieldB });
-      }
+      // 验证的API方法
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log(values);
+          // 将值合并到当前组件
+          Object.assign(this, values);
+        }
+      });
     },
   },
 };

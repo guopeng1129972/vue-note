@@ -461,3 +461,58 @@ export default {
     },
   },
 ```
+
+# 43 | 初始数据、自动校验、动态赋值
+## 表单校验的方式
+>- 1.修改数据，映射表单表单数据 
+data+rule ==>form
+>- 2.修改数据，映射表单表单数据 （当前数据不止表单这一处使用）
+data+rule ==>form,other
+>- 3.复制（有必要是深克隆）数据在form组件，submit成功之后同步给data
+cloneData+data+rule ==> cloneData=>form =submit>data=cloneData
+                    ==> data =>other
+>- 4.antd的实现方式
+ant 封装的form组件，通过API去获取、修改数据
+data+rule ==> form =submit>data ==>data=form.getFieldsValue()
+data+rule ==> data =>other
+## src/views/Forms/BasicForm.vue
+```html
+      <a-input
+      <!-- 使用 v-decorator 添加监听 -->
+        v-decorator="[
+          'fieldA',
+          {
+            // 使用initialValue 的初始值，和default的形式一样，只会生效一次
+            initialValue: fieldA,
+            //required: true 表示必填
+            rules: [{ required: true, min: 6, message: '必须大于5个字符' }],
+          },
+        ]"
+        placeholder="input placeholder"
+      />
+```
+```js
+  data() {
+    // 将库中的this.$form复制到当前组件，操作数据
+    this.form = this.$form.createForm(this);
+    // ...
+ mounted() {
+    setInterval(() => {
+      // 设置值用 api的 this.form.setFieldsValue({key:value})
+      this.form.setFieldsValue({
+        fieldA: `hello ${Math.floor(Math.random() * 100)}`,
+      });
+    }, 2000);
+  },
+methods: {
+  handleSubmit() {
+     //验证的API方法  this.form.validateFields（cb） 
+    this.form.validateFields((err, values) => {
+      if (!err) {
+        console.log(values);
+        // 将值合并到当前组件
+        Object.assign(this, values);
+      }
+    });
+  },
+```
