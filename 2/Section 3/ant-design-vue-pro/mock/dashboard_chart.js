@@ -8,7 +8,7 @@ function chart(method) {
     //   res = [20, 40, 78, 10, 30, 48];
     //   break;
     default:
-      null;
+      res = null;
   }
   return res;
 }

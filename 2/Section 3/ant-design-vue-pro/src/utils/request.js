@@ -1,7 +1,7 @@
 import axios from "axios";
 import { notification } from "ant-design-vue";
 
-function require(options) {
+function request(options) {
   return axios(options)
     .then((res) => {
       return res;
@@ -27,4 +27,4 @@ function require(options) {
     });
 }
 
-export default require;
+export default request;

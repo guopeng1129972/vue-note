@@ -516,3 +516,30 @@ methods: {
     });
   },
 ```
+
+# 44 | 创建一个分步表单
+## mock/form.js
+创建当前数据的mock cmd规范
+## src/store/modules/form.js
+form的store
+```js
+export default {
+  // namespaced 全部为小写
+  namespaced: true,
+  state,
+```
+## src/views/Forms/StepForm/Step1.vue
+```html
+<template>
+  <div>
+  <!-- :form="form" 必须表明数据来源 -->
+    <a-form layout="horizontal" :form="form">
+      <a-form-item
+```
+````js
+  data() {
+    // 复制form应该在什么生命周期？ 只要在使用“form前”，实例化“this后”创建即可
+    this.form = this.$form.createForm(this);
+```
+## src/views/Forms/StepForm/Step2.vue
+## src/views/Forms/StepForm/Step3.vue

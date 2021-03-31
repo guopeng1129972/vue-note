@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import require from "../../utils/require";
+import request from "../../utils/request";
 import Chart from "../../components/Chart";
 
 export default {
@@ -22,7 +22,7 @@ export default {
   methods: {
     getChartData() {
       // 使用封装axios的方法
-      require({
+      request({
         url: "http://localhost:3000/api/dashboard/chart",
         methods: "get",
         params: { ID: 12345 },

@@ -10,13 +10,15 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000",
+        target: "http://localhost:8080",
         bypass: function (req, res) {
+          // console.log('process.env.MOCK',process.env.MOCK)
           if (req.headers.accept.indexOf("html") !== -1) {
             console.log("Skipping proxy for browser request.");
             return "/index.html";
           } else if (process.env.MOCK !== "none") {
             // 处理url
+            // console.log(req.path)
             const name = req.path.split("/api/")[1].split("/").join("_");
             // 引入请求的数据  const mock = require(`./mock/dashboard_chart.js`);
             const mock = require(`./mock/${name}`);
