@@ -4,6 +4,10 @@ import request from "../../utils/request";
 const state = {
   step: {
     payAccount: "123456",
+    receiverAccount: {
+      type: "bank",
+      number: "12345645",
+    },
   },
 };
 

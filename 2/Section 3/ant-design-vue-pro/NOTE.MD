@@ -536,10 +536,63 @@ export default {
     <a-form layout="horizontal" :form="form">
       <a-form-item
 ```
-````js
+```js
   data() {
     // 复制form应该在什么生命周期？ 只要在使用“form前”，实例化“this后”创建即可
     this.form = this.$form.createForm(this);
 ```
 ## src/views/Forms/StepForm/Step2.vue
 ## src/views/Forms/StepForm/Step3.vue
+
+# 45 | 自己封装一个支持自动校验的表单项
+
+## src/components/ReceiverAccount.vue
+
+```js
+
+  data() {
+    // 解构赋值 当前下 的 { type, number } 为 this.value 的  { type, number } 没有为{}
+    const { type, number } = this.value || {};
+    return {
+      type: type || "alipay",
+      number: number || "",
+    };
+  watch: {
+    value(val) {
+      Object.assign(this, val);
+    },
+  },
+  methods: {
+    handleNumberChange(e) {
+      // 传值修改  change 事件 修改 ...this.value 的 number 为 e.target.value
+      this.$emit("change", { ...this.value, number: e.target.value });
+    },
+```
+## src/views/Forms/StepForm/Step1.vue
+```jsx
+ <ReceiverAccount
+          v-decorator="[
+            'receiverAccount',
+            {
+              // 绑定值 step.receiverAccount,
+              initialValue: step.receiverAccount,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入收款账号',
+                  //  添加 validator 
+                  validator: (rule, value, callback) => {
+                    if (value && value.number) {
+                      callback();
+                    } else {
+                      callback(false);
+                    }
+                  },
+                },
+              ],
+            },
+          ]"
+          placeholder="请输入收款账号"
+        />
+```
+
