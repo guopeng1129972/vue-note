@@ -23,7 +23,6 @@
         <span>{{ item.meta.title }}</span>
       </a-menu-item>
       <sub-menu v-else :key="item.path" :menu-info="item" />
-      
     </template>
   </a-sub-menu>
 </template>
@@ -34,5 +33,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

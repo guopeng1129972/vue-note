@@ -4,8 +4,8 @@ import findLast from "lodash/findLast";
 import { notification } from "ant-design-vue";
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
-import NotFound from "../views/403.vue";
-import Forbidden from "../views/404.vue";
+import Forbidden from "../views/403.vue";
+import NotFound from "../views/404.vue";
 import { check, isLogin } from "../utils/auth";
 
 Vue.use(VueRouter);
@@ -131,7 +131,7 @@ const routes = [
     ],
   },
   {
-    path: "、403",
+    path: "/403",
     name: "403",
     hideInMenu: true,
     component: Forbidden,

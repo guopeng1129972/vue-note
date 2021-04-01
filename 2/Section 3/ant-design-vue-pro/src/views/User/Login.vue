@@ -1,15 +1,9 @@
 <template>
-  <div>
-    登录页面
-  </div>
+  <div>登录页面</div>
 </template>
 
 <script>
-export default {
- 
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

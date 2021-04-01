@@ -1,16 +1,9 @@
-
 <template>
-  <div>
-    注册页面
-  </div>
+  <div>注册页面</div>
 </template>
 
 <script>
-export default {
-  
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

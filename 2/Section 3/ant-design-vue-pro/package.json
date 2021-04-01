@@ -39,6 +39,7 @@
     "lodash": "^4.17.21",
     "prettier": "^2.2.1",
     "resize-detector": "^0.3.0",
+    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

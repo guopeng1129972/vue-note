@@ -1,15 +1,13 @@
 <template>
-  <div class="header" >header</div>
+  <div class="header">header</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style scoped>
-.header{
+.header {
   float: right;
   background: red;
 }

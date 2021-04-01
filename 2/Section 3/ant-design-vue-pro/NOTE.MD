@@ -596,3 +596,62 @@ export default {
         />
 ```
 
+# 46 | 如何管理系统中使用的图标
+## 常用方法
+>- 1.css精灵
+优点 省地方 通过css设置位置 大小
+缺点 拼接图片 而且放大会模糊 
+>- 2.font-icon
+优点 方便使用 但是不能使用多色图标
+>- 3.svg （封装后的最好）
+优点 封装后 使用方便 并且可以使用多色图标
+## 使用
+### 获取图标
+https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=2458558
+选择图标 获取地址 
+//at.alicdn.com/t/font_2458558_9dpxy8xegfu.js
+### ant上使用
+https://www.antdv.com/components/icon-cn/#%E8%87%AA%E5%AE%9A%E4%B9%89-font-%E5%9B%BE%E6%A0%87
+
+
+## src/main.js
+```js
+// 引入
+import Icon from "ant-design-vue/lib/icon";
+Vue.use(Icon);
+// 挂载
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: "//at.alicdn.com/t/font_2458558_35zlnhu43ze.js", // 在 iconfont.cn 上生成
+});
+```
+
+
+## src/views/403.vue
+## src/views/404.vue
+使用
+```jsx
+ <IconFont type="icon-403" style="font-size: 100px" />
+```
+
+## 按组件传入svg
+```bash
+npm install vue-svg-loader --save-dev
+```
+### vue.config.js
+```js
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule("svg");
+
+    // 清除已有的所有 loader。
+    // 如果你不这样做，接下来的 loader 会附加在该规则现有的 loader 之后。
+    svgRule.uses.clear();
+
+    // 添加要替换的 loader
+    svgRule.use("vue-svg-loader").loader("vue-svg-loader");
+  },
+```
+
+## 查看当前项目都安装了哪些loader?
+```bash
+vue inspect > output.js
+```

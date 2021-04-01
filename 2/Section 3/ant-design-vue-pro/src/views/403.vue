@@ -1,9 +1,17 @@
 <template>
-  <div>403</div>
+  <div class="iconFontClass">
+    <IconFont class="IconFont" type="icon-403" />
+  </div>
 </template>
-
 <script>
 export default {};
 </script>
 
-<style></style>
+<style>
+.iconFontClass {
+  text-align: center;
+}
+IconFont {
+  font-size: 400px;
+}
+</style>

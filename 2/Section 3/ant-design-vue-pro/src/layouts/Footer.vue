@@ -1,14 +1,9 @@
-
 <template>
-  <div> Ant Design pro ©2021 Created by GuoPeng</div>
+  <div>Ant Design pro ©2021 Created by GuoPeng</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>
