@@ -69,7 +69,9 @@ export default {
   line-height: 64px;
   font-size: 20px;
 }
-
+/* #components-layout-demo-side >>> .ant-menu-dark .ant-menu-item-selected {
+  color: #000000;
+} */
 .trigger:hover {
   background: #eeeeee;
 }

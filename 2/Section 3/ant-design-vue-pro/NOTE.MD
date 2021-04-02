@@ -655,3 +655,81 @@ npm install vue-svg-loader --save-dev
 ```bash
 vue inspect > output.js
 ```
+
+# 47 | 如何定制主题及动态切换主题
+https://www.antdv.com/docs/vue/customize-theme-cn/#Ant-Design-Vue-%E7%9A%84%E6%A0%B7%E5%BC%8F%E5%8F%98%E9%87%8F
+安装antd相关的插件
+## 
+```bash
+cnpm install antd-theme-webpack-plugin --save-dev
+```
+
+## src/components/SettingDrawer/index.less
+配置less
+```css
+@import "~ant-design-vue/lib/style/themes/default.less";
+.setting-drawer-handle {
+  position: absolute;
+  top: 240px;
+  right: 300px;
+  width: 48px;
+  height: 48px;
+  background: @primary-color;
+  color: white;
+```
+## vue.config.js
+```js
+const path = require("path");
+// AntDesignThemePlugin ant配置plugin
+const AntDesignThemePlugin = require("antd-theme-webpack-plugin");
+
+const options = {
+  antDir: path.join(__dirname, "./node_modules/ant-design-vue"),
+  stylesDir: path.join(__dirname, "./src"),
+  varFile: path.join(
+    __dirname,
+    "./node_modules/ant-design-vue/lib/style/themes/default.less"
+  ),
+  themeVariables: ["@primary-color"],
+  generateOnce: false,
+  lessUrl: "https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js",
+  publicPath: "",
+  customColorRegexArray: [], // An array of regex codes to match your custom color variable values so that code can identify that it's a valid color. Make sure your regex does not adds false positives.
+};
+
+const themePlugin = new AntDesignThemePlugin(options);
+module.exports = {
+  // 引用
+  configureWebpack: {
+    plugins: [
+      themePlugin
+    ]
+  },
+  loaderOptions: {
+  // 向 CSS 相关的 loader 传递选项
+  less: {
+    modifyVars: {
+      "primary-color": "#1DA57A",
+    },
+    javascriptEnabled: true,
+  },
+},
+```
+## public/index.html
+按照插件的描述配置 index.html
+```html
+    <script>
+      window.less = {
+        async: false,
+        env: "production",
+        javascriptEnabled: true,
+        modifyVars: {
+          "primary-color": "#1DA57A",
+        },
+      };
+    </script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"
+    ></script>
+```

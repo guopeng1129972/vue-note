@@ -1,6 +1,6 @@
 export function getCurrentAuthority() {
   // 模拟获取当前用户
-  return ["user"];
+  return ["admin"];
 }
 export function check(authority) {
   // 检查当前用户是否有权限
