@@ -1,32 +1,44 @@
-# 32 | 使用Vue CLI 3快速创建项目
-## 安装两个包ant-design-vue(样式库) moment(控制时间格式的包)
+# 32 | 使用 Vue CLI 3 快速创建项目
+
+## 安装两个包 ant-design-vue(样式库) moment(控制时间格式的包)
+
 ```bash
 npm install ant-design-vue moment
 ```
->- npm run serve 错误
+
+> - npm run serve 错误
+
 ```bash
-cnpm install core-js@3.6.4 
+cnpm install core-js@3.6.4
 # ok
 ```
--> Syntax Error: 
+
+-> Syntax Error:
+
 ```bash
-Syntax Error: 
+Syntax Error:
 // https://github.com/ant-design/ant-motion/issues/44
 .bezierEasingMixin();
 ```
+
 ### 需要配置,在
+
 #### vue-cli 的配置方法
+
 > - vue.config.js
-https://cli.vuejs.org/zh/config/#vue-config-js
+>   https://cli.vuejs.org/zh/config/#vue-config-js
 
+# 33 | 如何自定义 Webpack 和 Babel 配置
 
-# 33 | 如何自定义Webpack和Babel配置
-vue-cli 集成了webpack和babel的配置
+vue-cli 集成了 webpack 和 babel 的配置
+
 ## webpack
+
 配置 vue.config.js
+
 ```js
  css: {
-    loaderOptions: { // 向 CSS 相关的 loader 传递选项 
+    loaderOptions: { // 向 CSS 相关的 loader 传递选项
       less:
       {
         javascriptEnabled: true
@@ -34,19 +46,26 @@ vue-cli 集成了webpack和babel的配置
     }
   },
 ```
+
 ## babel
+
 配置 babel.config.js
-当前最新版本，全局引入antd就是按需加载，因此对于babel的这个配置没必要，甚至还会出错
+当前最新版本，全局引入 antd 就是按需加载，因此对于 babel 的这个配置没必要，甚至还会出错
+
 ```js
 module.exports = {
-  presets: ["@vue/cli-plugin-babel/preset"],//cli 默认 配置默认即可
-  "plugins": [
-    ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", "style": "css" }] // `style: true` 会加载 less 文件
-  ]
+  presets: ["@vue/cli-plugin-babel/preset"], //cli 默认 配置默认即可
+  plugins: [
+    [
+      "import",
+      { libraryName: "ant-design-vue", libraryDirectory: "es", style: "css" },
+    ], // `style: true` 会加载 less 文件
+  ],
 };
 ```
 
 # 34 | 如何设计一个高扩展性的路由
+
 ## 实现登录与注册
 
 ```js
@@ -56,47 +75,60 @@ component: {render: h => h("router-view")}, //同步加载
 // 前两个异步加载 第二个异步加载会被webpack分包
 
 ```
+
 ## 添加加载动画效果
+
 就是页面顶端的那一条进度线
+
 ```bash
 npm install nprogress
 ```
->- src/router/index.js
+
+> - src/router/index.js
+
 ```js
-router.beforeEach((to,from,next) => {
-  Nprogress.start()
-  next()
+router.beforeEach((to, from, next) => {
+  Nprogress.start();
+  next();
 });
-router.afterEach(()=>{
-  Nprogress.done()
-})
+router.afterEach(() => {
+  Nprogress.done();
+});
 ```
 
 # 35 | 实现一个可动态改变的页面布局
+
 在官网上搜索控件，然后引入代码，修改属性
 https://www.antdv.com/components/radio-cn/
+
 ## src/layouts/BasicLayout.vue
+
 自定义控件 整体的布局
 collapsed
+
 ```html
 <!-- a-layout-sider 侧边栏属性 :trigger="null" 不显示按钮 -->
 <a-layout-sider :trigger="null" v-model="collapsed" collapsible>
-<!-- 自定义侧边栏按钮 -->
-<a-icon
-  class="trigger"
-  :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-  @click="collapsed = !collapsed"
-></a-icon>
+  <!-- 自定义侧边栏按钮 -->
+  <a-icon
+    class="trigger"
+    :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+    @click="collapsed = !collapsed"
+  ></a-icon
+></a-layout-sider>
 ```
 
 ## src/components/SettingDrawer/index.vue
+
 自定义控件 右侧抽屉
-注意这里取值是 $route.query 赋值是 this.$router.push 的，而且其中的query修改的时候用的也是  ...this.$route.query,
->- 取不到值默认
- :value="$route.query.navTheme || 'dark'"
->- 修改触发事件，传入事件当前值
- @change="(e) => handleSettingChange('navTheme', e.target.value)"
->- 传值修改方法
+注意这里取值是 $route.query 赋值是 this.$router.push 的，而且其中的 query 修改的时候用的也是 ...this.$route.query,
+
+> - 取不到值默认
+>   :value="$route.query.navTheme || 'dark'"
+> - 修改触发事件，传入事件当前值
+>   @change="(e) => handleSettingChange('navTheme', e.target.value)"
+> - 传值修改方法
+
 ```js
   handleSettingChange(type, value) {
       this.$router.push({
@@ -112,17 +144,21 @@ collapsed
 # 36 | 如何将菜单和路由结合
 
 ## 一个概念
-> - 带default-xxx的这种设计，类似于受控组件的形式，是组件库给定的一个初始值
-default-selected-keys
-default-open-keys
+
+> - 带 default-xxx 的这种设计，类似于受控组件的形式，是组件库给定的一个初始值
+>   default-selected-keys
+>   default-open-keys
 
 selected-keys
 open-keys
-## 实现一个根据父组件传值改变子组件样式的实例
-> - src/layouts/BasicLayout.vue 父组件给子组件传值
-  <SiderMenu :theme="navTheme" :collapsed="collapsed" />
 
-> - src/layouts/SiderMenu.vue 子组件watch值的修改 作为props传递给孙组件
+## 实现一个根据父组件传值改变子组件样式的实例
+
+> - src/layouts/BasicLayout.vue 父组件给子组件传值
+>   <SiderMenu :theme="navTheme" :collapsed="collapsed" />
+
+> - src/layouts/SiderMenu.vue 子组件 watch 值的修改 作为 props 传递给孙组件
+
 ```js
   watch: {
     collapsed: function (val) {
@@ -136,20 +172,26 @@ open-keys
     },
   },
 ```
-> - src/layouts/SubMenu.vue   
-继承从父级传来的props
+
+> - src/layouts/SubMenu.vue  
+>   继承从父级传来的 props
+
 ```js
 export default {
   props: ["menuInfo"],
 };
 ```
+
 使用
-```html 
+
+```html
 :type="props.menuInfo.meta.icon"
 ```
 
 # 37 | 如何使用路由管理用户权限
+
 > - src/utils/auth.js 权限校验
+
 ```js
 export function getCurrentAuthority() {
   // 模拟获取当前用户
@@ -158,31 +200,39 @@ export function check(authority) {
 export function isLogin() {
   // 检查当前用户是否登录
 ```
+
 > - src/router/index.js
+
 ```bash
 npm install lodash
 ```
+
 使用 notification 模块完成 通知提示框的调用
+
 ```js
 import { notification } from "ant-design-vue";
  notification.error({
         message: "403",
         description: "没有权限，请联系管理员",
       });
-// 配置当前路由的访问权限 authority: ["user", "admin"] 
+// 配置当前路由的访问权限 authority: ["user", "admin"]
  {
     path: "/",
     meta: { authority: ["user", "admin"] },
     component: () =>
 ```
-> - src/views/403.vue 
-创建的一个403 无权限访问的页面
+
+> - src/views/403.vue
+>   创建的一个 403 无权限访问的页面
 
 # 38 | 更加精细化的权限设计（权限组件、权限指令）
-> - 用了Vue实例的组件就可以用use注册组件
+
+> - 用了 Vue 实例的组件就可以用 use 注册组件
 
 ## src/components/Authorized.vue
-使用render函数写的函数式组件
+
+使用 render 函数写的函数式组件
+
 ```js
   props: {
     authority: {
@@ -198,8 +248,11 @@ import { notification } from "ant-design-vue";
   },
 };
 ```
+
 ## src/components/direct/auth.js
+
 使用全局的方式注册组件（全局注册的组件在全局都可以调用）
+
 ```js
 import { check } from "../../utils/auth";
 // vue注册全局组件
@@ -217,19 +270,20 @@ function install(Vue, options = {}) {
 }
 export default { install };
 ```
+
 ## src/layouts/BasicLayout.vue
+
 两种使用注册的组件的方式（都有利弊）
+
 ```html
 <!-- 1.全局注册的方式 -->
-<a-icon
-        v-auth="['admin']"
-<!-- 2.插件式注册组件的方式 -->
-<Authorized :authority="['admin']">
-  <SettingDrawer />
-</Authorized>
+<a-icon v-auth="['admin']" <!-- 2.插件式注册组件的方式 -->
+  <Authorized :authority="['admin']"> <SettingDrawer /> </Authorized
+></a-icon>
 ```
 
 ## src/main.js
+
 ```js
 import Authorized from "./components/Authorized";
 import Auth from "./components/directives/auth";
@@ -240,32 +294,40 @@ Vue.component("Authorized", Authorized);
 Vue.use(Auth);
 ```
 
-# 39 | 如何在组件中使用ECharts、Antv等其他第三方库
+# 39 | 如何在组件中使用 ECharts、Antv 等其他第三方库
+
 ```bash
 cnpm install echarts
 ```
+
 ## 一个问题 两个方案
+
 > - 1
-如果consle提示：TypeError: Cannot read property 'init' of undefined"，
-请在mounted()语句块开始加一句：var echarts = require("echarts"); 
-同时去掉视频中组件中对应的import语句。这和echarts版本有关。
+>   如果 consle 提示：TypeError: Cannot read property 'init' of undefined"，
+>   请在 mounted()语句块开始加一句：var echarts = require("echarts");
+>   同时去掉视频中组件中对应的 import 语句。这和 echarts 版本有关。
 > - 2
-import * as echarts from "echarts";
-## 监听chartDom的大小变化
+>   import \* as echarts from "echarts";
+
+## 监听 chartDom 的大小变化
+
 ```bash
 cnpm install resize-detector
 ```
 
 ## src/components/Chart.vue
-> - 如何在vue中gc中删除？性能优化方式
-  beforeDestroy() {
+
+> - 如何在 vue 中 gc 中删除？性能优化方式
+>   beforeDestroy() {
+
     // 在组件销毁时，移除监听，在GC中删除
     removeListener(this.$refs.chartDom, this.resize);
     this.chart.dispose();
     this.chart = null;
-  },
 
-> - 使用echarts性能优化，如何监听图表渲染位置？让其在最后渲染到正确的位置上？
+},
+
+> - 使用 echarts 性能优化，如何监听图表渲染位置？让其在最后渲染到正确的位置上？
 
 ```js
 import * as echarts from "echarts";
@@ -303,23 +365,29 @@ export default {
   },
 
 ```
+
 > - 性能优化方式 深度监听的优化方式？
- 深度监听 深度监听很耗费性能，
- 另一个方式是还是使用普通监听，
- 在父组件中数据变化之后重新赋值
+>   深度监听 深度监听很耗费性能，
+>   另一个方式是还是使用普通监听，
+>   在父组件中数据变化之后重新赋值
+
 ```js
-    this.interval = setInterval(() => {
-      // 这里访问data的chartOption数据的调用方法是 this.chartOption,而不是 this.data.chartOption
-      this.chartOption.series[0].data = this.chartOption.series[0].data.map(
-        () => random(100)
-      );
-      // 数据变化重新赋值
-      this.chartOption = { ...this.chartOption };
-    }, 3000);
+this.interval = setInterval(() => {
+  // 这里访问data的chartOption数据的调用方法是 this.chartOption,而不是 this.data.chartOption
+  this.chartOption.series[0].data = this.chartOption.series[0].data.map(() =>
+    random(100)
+  );
+  // 数据变化重新赋值
+  this.chartOption = { ...this.chartOption };
+}, 3000);
 ```
-# 40 | 如何高效地使用Mock数据进行开发
+
+# 40 | 如何高效地使用 Mock 数据进行开发
+
 ## vue.config.js
+
 配置 webpack
+
 ```js
   devServer: {
     proxy: {
@@ -333,7 +401,7 @@ export default {
           } else {
             // 处理url
             const name = req.path.split("/api/")[1].split("/").join("_");
-            // 引入请求的数据  const mock = require(`./mock/dashboard_chart.js`); 
+            // 引入请求的数据  const mock = require(`./mock/dashboard_chart.js`);
             const mock = require(`./mock/${name}`);
             const result = mock(req.method);
             delete require.cache[require.resolve(`./mock/${name}`)];
@@ -345,12 +413,15 @@ export default {
   },
 
 ```
+
 ## mock/dashboard_chart.js
 
 ```bash
 cnpm install axios --save-dev
 ```
+
 ## src/views/Dashboard/Analysis.vue
+
 ```js
  methods: {
     getChartData() {
@@ -376,31 +447,43 @@ cnpm install axios --save-dev
 # 41 | 如何与服务端进行交互（Axios）
 
 ## 创建 ant-design-vue-pro-server
+
 ../ant-design-vue-pro-server
+
 ## package.json
+
 ```bash
 cnpm install cross-env
 ```
-添加serve:no-mock 来区别，是不是用mock，不用的话从服务器获取
+
+添加 serve:no-mock 来区别，是不是用 mock，不用的话从服务器获取
+
 ```js
 "scripts": {
     "serve": "vue-cli-service serve",
     "serve:no-mock": "cross-env MOCK=node vue-cli-service serve",
 ```
-## 配置jsx完成对提示框样式的自定义
+
+## 配置 jsx 完成对提示框样式的自定义
+
 https://github.com/vuejs/jsx/
+
 ```bash
 npm install @vue/babel-preset-jsx @vue/babel-helper-vue-jsx-merge-props
 ```
->- Then add the preset to babel.config.js:
+
+> - Then add the preset to babel.config.js:
+
 ```js
 module.exports = {
-  presets: ['@vue/babel-preset-jsx'],
-}
+  presets: ["@vue/babel-preset-jsx"],
+};
 ```
 
 ## src/utils/require.js
-封装axios ，使用jsx 就是为啥要装jsx的babel
+
+封装 axios ，使用 jsx 就是为啥要装 jsx 的 babel
+
 ```js
 // 使用封装axios的方法
 require({
@@ -409,25 +492,32 @@ require({
   params: { ID: 12345 },
 }).then((response) => {
 ```
+
 ## 创建服务端代码
+
 ../ant-design-vue-pro-server/NOTE.MD
 
 # 42 | 创建一个普通表单
+
 官网复制表单
+
 ## src/views/Forms/BasicForm.vue
-根据官网文档添加属性 并bind 
+
+根据官网文档添加属性 并 bind
 validateStatus: 校验状态，可选 ‘success’, ‘warning’, ‘error’, ‘validating’。
 help：设置校验文案。
+
 ```html
-<a-form-item
-  :validateStatus="fieldAStatus"
-  :help="fieldAHelp"
+<a-form-item :validateStatus="fieldAStatus" :help="fieldAHelp">
+  <!-- 动态绑定值 -->
+  <a-input v-model="fieldA" placeholder="input placeholder" />
+  <!-- 添加 Submit的事件handleSubmit -->
+  <a-button type="primary" @click="handleSubmit">
+    Submit
+  </a-button></a-form-item
 >
-<!-- 动态绑定值 -->
-<a-input v-model="fieldA" placeholder="input placeholder" />
-<!-- 添加 Submit的事件handleSubmit -->
-<a-button type="primary" @click="handleSubmit"> Submit </a-button>
 ```
+
 ```js
 export default {
   data() {
@@ -463,34 +553,34 @@ export default {
 ```
 
 # 43 | 初始数据、自动校验、动态赋值
+
 ## 表单校验的方式
->- 1.修改数据，映射表单表单数据 
-data+rule ==>form
->- 2.修改数据，映射表单表单数据 （当前数据不止表单这一处使用）
-data+rule ==>form,other
->- 3.复制（有必要是深克隆）数据在form组件，submit成功之后同步给data
-cloneData+data+rule ==> cloneData=>form =submit>data=cloneData
+
+> - 1.修改数据，映射表单表单数据
+>   data+rule ==>form
+> - 2.修改数据，映射表单表单数据 （当前数据不止表单这一处使用）
+>   data+rule ==>form,other
+> - 3.复制（有必要是深克隆）数据在 form 组件，submit 成功之后同步给 data
+>   cloneData+data+rule ==> cloneData=>form =submit>data=cloneData
+
                     ==> data =>other
->- 4.antd的实现方式
-ant 封装的form组件，通过API去获取、修改数据
-data+rule ==> form =submit>data ==>data=form.getFieldsValue()
-data+rule ==> data =>other
+
+> - 4.antd 的实现方式
+>   ant 封装的 form 组件，通过 API 去获取、修改数据
+>   data+rule ==> form =submit>data ==>data=form.getFieldsValue()
+>   data+rule ==> data =>other
+
 ## src/views/Forms/BasicForm.vue
+
 ```html
-      <a-input
-      <!-- 使用 v-decorator 添加监听 -->
-        v-decorator="[
-          'fieldA',
-          {
-            // 使用initialValue 的初始值，和default的形式一样，只会生效一次
-            initialValue: fieldA,
-            //required: true 表示必填
-            rules: [{ required: true, min: 6, message: '必须大于5个字符' }],
-          },
-        ]"
-        placeholder="input placeholder"
-      />
+<a-input <!-- 使用 v-decorator 添加监听 -->
+  v-decorator="[ 'fieldA', { // 使用initialValue
+  的初始值，和default的形式一样，只会生效一次 initialValue: fieldA, //required:
+  true 表示必填 rules: [{ required: true, min: 6, message: '必须大于5个字符' }],
+  }, ]" placeholder="input placeholder" /></a-input
+>
 ```
+
 ```js
   data() {
     // 将库中的this.$form复制到当前组件，操作数据
@@ -506,7 +596,7 @@ data+rule ==> data =>other
   },
 methods: {
   handleSubmit() {
-     //验证的API方法  this.form.validateFields（cb） 
+     //验证的API方法  this.form.validateFields（cb）
     this.form.validateFields((err, values) => {
       if (!err) {
         console.log(values);
@@ -518,17 +608,24 @@ methods: {
 ```
 
 # 44 | 创建一个分步表单
+
 ## mock/form.js
-创建当前数据的mock cmd规范
+
+创建当前数据的 mock cmd 规范
+
 ## src/store/modules/form.js
-form的store
+
+form 的 store
+
 ```js
 export default {
   // namespaced 全部为小写
   namespaced: true,
   state,
 ```
+
 ## src/views/Forms/StepForm/Step1.vue
+
 ```html
 <template>
   <div>
@@ -536,12 +633,15 @@ export default {
     <a-form layout="horizontal" :form="form">
       <a-form-item
 ```
+
 ```js
   data() {
     // 复制form应该在什么生命周期？ 只要在使用“form前”，实例化“this后”创建即可
     this.form = this.$form.createForm(this);
 ```
+
 ## src/views/Forms/StepForm/Step2.vue
+
 ## src/views/Forms/StepForm/Step3.vue
 
 # 45 | 自己封装一个支持自动校验的表单项
@@ -568,10 +668,12 @@ export default {
       this.$emit("change", { ...this.value, number: e.target.value });
     },
 ```
+
 ## src/views/Forms/StepForm/Step1.vue
+
 ```jsx
- <ReceiverAccount
-          v-decorator="[
+<ReceiverAccount
+  v-decorator="[
             'receiverAccount',
             {
               // 绑定值 step.receiverAccount,
@@ -592,29 +694,36 @@ export default {
               ],
             },
           ]"
-          placeholder="请输入收款账号"
-        />
+  placeholder="请输入收款账号"
+/>
 ```
 
 # 46 | 如何管理系统中使用的图标
+
 ## 常用方法
->- 1.css精灵
-优点 省地方 通过css设置位置 大小
-缺点 拼接图片 而且放大会模糊 
->- 2.font-icon
-优点 方便使用 但是不能使用多色图标
->- 3.svg （封装后的最好）
-优点 封装后 使用方便 并且可以使用多色图标
+
+> - 1.css 精灵
+>   优点 省地方 通过 css 设置位置 大小
+>   缺点 拼接图片 而且放大会模糊
+> - 2.font-icon
+>   优点 方便使用 但是不能使用多色图标
+> - 3.svg （封装后的最好）
+>   优点 封装后 使用方便 并且可以使用多色图标
+
 ## 使用
+
 ### 获取图标
+
 https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=2458558
-选择图标 获取地址 
+选择图标 获取地址
 //at.alicdn.com/t/font_2458558_9dpxy8xegfu.js
-### ant上使用
+
+### ant 上使用
+
 https://www.antdv.com/components/icon-cn/#%E8%87%AA%E5%AE%9A%E4%B9%89-font-%E5%9B%BE%E6%A0%87
 
-
 ## src/main.js
+
 ```js
 // 引入
 import Icon from "ant-design-vue/lib/icon";
@@ -625,19 +734,24 @@ const IconFont = Icon.createFromIconfontCN({
 });
 ```
 
-
 ## src/views/403.vue
+
 ## src/views/404.vue
+
 使用
+
 ```jsx
- <IconFont type="icon-403" style="font-size: 100px" />
+<IconFont type="icon-403" style="font-size: 100px" />
 ```
 
-## 按组件传入svg
+## 按组件传入 svg
+
 ```bash
 npm install vue-svg-loader --save-dev
 ```
+
 ### vue.config.js
+
 ```js
   chainWebpack: (config) => {
     const svgRule = config.module.rule("svg");
@@ -651,33 +765,41 @@ npm install vue-svg-loader --save-dev
   },
 ```
 
-## 查看当前项目都安装了哪些loader?
+## 查看当前项目都安装了哪些 loader?
+
 ```bash
 vue inspect > output.js
 ```
 
 # 47 | 如何定制主题及动态切换主题
+
 https://www.antdv.com/docs/vue/customize-theme-cn/#Ant-Design-Vue-%E7%9A%84%E6%A0%B7%E5%BC%8F%E5%8F%98%E9%87%8F
-安装antd相关的插件
-## 
+安装 antd 相关的插件
+
+##
+
 ```bash
 cnpm install antd-theme-webpack-plugin --save-dev
 ```
 
 ## src/components/SettingDrawer/index.less
-配置less
+
+配置 less
+
 ```css
 @import "~ant-design-vue/lib/style/themes/default.less";
-.setting-drawer-handle {
-  position: absolute;
-  top: 240px;
-  right: 300px;
-  width: 48px;
-  height: 48px;
-  background: @primary-color;
-  color: white;
+/* .setting-drawer-handle { */
+position: absolute;
+top: 240px;
+right: 300px;
+width: 48px;
+height: 48px;
+background: @primary-color;
+color: white;
 ```
+
 ## vue.config.js
+
 ```js
 const path = require("path");
 // AntDesignThemePlugin ant配置plugin
@@ -715,21 +837,128 @@ module.exports = {
   },
 },
 ```
+
 ## public/index.html
+
 按照插件的描述配置 index.html
+
 ```html
-    <script>
-      window.less = {
-        async: false,
-        env: "production",
-        javascriptEnabled: true,
-        modifyVars: {
-          "primary-color": "#1DA57A",
-        },
-      };
-    </script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"
-    ></script>
+<script>
+  window.less = {
+    async: false,
+    env: "production",
+    javascriptEnabled: true,
+    modifyVars: {
+      "primary-color": "#1DA57A",
+    },
+  };
+</script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"
+></script>
+```
+
+# 48 | 如何做好国际化
+
+国际化字符的库
+
+```bash
+cnpm install vue-i18n --save-dev
+```
+
+处理字符串的库
+
+```bash
+cnpm install query-string --save-dev
+```
+
+## src/App.vue
+
+```jsx
+// 引入国际化语言
+    <a-config-provider :locale="locale">
+      <router-view></router-view>
+    </a-config-provider>
+```
+
+```js
+// 引入两个自定义语言库
+import enUS from "ant-design-vue/lib/locale-provider/en_US";
+import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
+import moment from "moment";
+export default {
+  data() {
+    return {
+      locale: zhCN,
+    };
+  },
+  watch: {
+    "$route.query.locale": function (val) {
+      this.locale = val === "enUS" ? enUS : zhCN;
+      // 同步传值给第三方库
+      moment.locale(val === "enUS" ? "en" : "zh-cn");
+    },
+  },
+};
+```
+
+> - 使用自定义语言国际化
+
+## src/main.js
+
+```js
+//引入
+import VueI18n from "vue-i18n";
+import zhCN from "../src/locale/zhCN";
+import enUS from "../src/locale/enUS";
+import queryString from "query-string";
+//挂载
+Vue.use(VueI18n);
+//实例化
+const i18n = new VueI18n({
+  locale: queryString.parse(location.search).locale || "zhCN",
+  messages: {
+    zhCN: { message: zhCN },
+    enUS: { message: enUS },
+  },
+});
+//初始化
+new Vue({
+  router,
+  i18n,
+```
+
+## src/layouts/Header.vue
+
+```jsx
+// 挂载UI
+    <a-dropdown>
+      <a-icon type="global"></a-icon>
+      <a-menu slot="overlay" :selectedKeys="[$route.query.locale || 'zhCN']">
+        <a-menu-item key="zhCN" @click="localeChange"> 中文 </a-menu-item>
+```
+
+```js
+  methods: {
+    localeChange({ key }) {
+      // 给antd传值,修改当前可以在库中修改的语言
+      this.$router.push({ query: { ...this.$route.query, locale: key } });
+      // 给 i18n 传值应用当前自定义的语言文件
+      this.$i18n.locale = key;
+    },
+  },
+};
+```
+
+## src/locale/enUS.js
+
+两个自定义语言库
+
+## src/views/Dashboard/Analysis.vue
+
+```jsx
+// 调用自定义的国家化语言库
+    {{ $t("message")["app.dashboard.analysis.timeLable"] }}:
+    <a-date-picker></a-date-picker>
 ```
