@@ -3,18 +3,20 @@
     {{ $t("message")["app.dashboard.analysis.timeLable"] }}:
     <a-date-picker></a-date-picker>
     <Chart :option="chartOption" style="height: 400px" />
+    <pre v-highlightjs="ChartCode"><code class="html"></code></pre>
   </div>
 </template>
 
 <script>
 import request from "../../utils/request";
 import Chart from "../../components/Chart";
-
+import ChartCode from "!!raw-loader!../../components/Chart";
 export default {
   components: { Chart },
   data() {
     return {
       chartOption: {},
+      ChartCode,
     };
   },
   mounted() {

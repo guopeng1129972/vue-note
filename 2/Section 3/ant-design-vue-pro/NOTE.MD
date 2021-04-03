@@ -1009,3 +1009,50 @@ https://github.com/vueComponent/ant-design-vue/issues/325
 ## src/components/Chart.vue
 
 如果不全部引入 会出错
+
+# 50 | 如何构建可交互的组件文档
+
+> - 1.  自己写一个 loader 处理，比较高端
+> - 2.  当做静态文件，单独处理
+>       将代码打出来，这样比较容易使用
+
+```bash
+# 用于实现静态资源内联 raw-loader 将代码打出来
+cnpm install raw-loader --save-dev
+# 用于代码高亮 vue 封装了highlightjs的库
+cnpm install vue-highlightjs --save-dev
+```
+
+## src/main.js
+
+按需引入 挂载 使用的样式按照 github 的样式
+
+```js
+import VueHighlightjs from "vue-highlightjs";
+import "highlight.js/styles/github.css";
+Vue.use(VueHighlightjs);
+```
+
+## src/views/Dashboard/Analysis.vue
+
+按照语法高亮显示 格式为 html
+
+```jsx
+<pre v-highlightjs="ChartCode">
+  <code class="html"></code>
+</pre>
+```
+
+引入需要打出来的代码的子组件一份，ChartCode 挂载到 data 上
+
+```js
+// !!raw-loader!../../components/Chart 按照静态文件处理
+import ChartCode from "!!raw-loader!../../components/Chart";
+export default {
+  components: { Chart },
+  data() {
+    return {
+      ChartCode,
+    };
+  },
+```
