@@ -1,6 +1,7 @@
 const path = require("path");
 // AntDesignThemePlugin ant配置plugin
 const AntDesignThemePlugin = require("antd-theme-webpack-plugin");
+const webpack = require("webpack");
 
 const options = {
   antDir: path.join(__dirname, "./node_modules/ant-design-vue"),
@@ -21,9 +22,15 @@ const themePlugin = new AntDesignThemePlugin(options);
 module.exports = {
   // 引用
   configureWebpack: {
-    plugins: [
-      themePlugin
-    ]
+    plugins: [themePlugin, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+    resolve: {
+      alias: {
+        "@ant-design/icons/lib/dist$": path.resolve(
+          __dirname,
+          "./src/icons.js"
+        ),
+      },
+    },
   },
   css: {
     loaderOptions: {

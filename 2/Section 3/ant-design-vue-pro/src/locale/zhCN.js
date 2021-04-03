@@ -1,3 +1,3 @@
-export default{
-  "app.dashboard.analysis.timeLable":"时间"
-}
+export default {
+  "app.dashboard.analysis.timeLable": "时间",
+};

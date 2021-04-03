@@ -4,6 +4,8 @@
 
 <script>
 import * as echarts from "echarts";
+import "echarts/lib/chart/bar";
+import "echarts/lib/component/title";
 import { removeListener, addListener } from "resize-detector";
 import debounce from "lodash/debounce";
 export default {

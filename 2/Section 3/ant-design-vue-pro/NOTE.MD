@@ -962,3 +962,50 @@ new Vue({
     {{ $t("message")["app.dashboard.analysis.timeLable"] }}:
     <a-date-picker></a-date-picker>
 ```
+
+# 49 | 如何高效地构建打包发布
+
+## 如何优化打包构建？
+
+> - 1.babel.config.js 中按需加载
+>   babel.config.js
+> - 2.路由懒加载 和拆包
+>   src/router/index.js
+
+```js
+  import(/* webpackChunkName: "layout" */ "../layouts/UserLayout.vue"),
+```
+
+> - 3.  按需引入 引入时，引入到具体的包名，而不是整个包都引入
+>       src/components/Chart.vue
+
+```js
+import debounce from "lodash/debounce";
+```
+
+## 查看当前项目 包的分析情况
+
+```bash
+npm run build -- --report
+```
+
+## 根据当前包的占用情况，来优化
+
+按需加载 操作方式的 issues
+https://github.com/vueComponent/ant-design-vue/issues/325
+
+## vue.config.js
+
+配置只打需要的包的方法
+
+## src/icons.js
+
+按照 GitHub 上的配置 icons.js 主要是需要用的一些 icon
+
+## src/App.vue
+
+按需引入需要的包
+
+## src/components/Chart.vue
+
+如果不全部引入 会出错
