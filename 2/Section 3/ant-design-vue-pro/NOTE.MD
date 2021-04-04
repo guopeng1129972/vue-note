@@ -1056,3 +1056,154 @@ export default {
     };
   },
 ```
+
+# 51 | 如何做好组件的单元测试
+
+```bash
+npm run test:unit --watch
+```
+
+## jest 快速入门及实践教程
+
+https://zhuanlan.zhihu.com/p/282835230
+
+### 3.3 断言函数
+
+测试即运行结果是否与我们预期结果一致 断言函数用来验证结果是否正确
+
+```js
+exspect(运行结果).toBe(期望的结果);
+//常见断言方法
+expect({ a: 1 }).toBe({ a: 1 }); //判断两个对象是否相等
+expect(1).not.toBe(2); //判断不等
+expect({ a: 1, foo: { b: 2 } }).toEqual({ a: 1, foo: { b: 2 } });
+expect(n).toBeNull(); //判断是否为null
+expect(n).toBeUndefined(); //判断是否为undefined
+expect(n).toBeDefined(); //判断结果与toBeUndefined相反
+expect(n).toBeTruthy(); //判断结果为true
+expect(n).toBeFalsy(); //判断结果为false
+expect(value).toBeGreaterThan(3); //大于3
+expect(value).toBeGreaterThanOrEqual(3.5); //大于等于3.5
+expect(value).toBeLessThan(5); //小于5
+expect(value).toBeLessThanOrEqual(4.5); //小于等于4.5
+expect(value).toBeCloseTo(0.3); // 浮点数判断相等
+expect("Christoph").toMatch(/stop/); //正则表达式判断
+expect(["one", "two"]).toContain("one"); //不解释
+```
+
+### 3.5 常见命令
+
+```json
+{
+  "nocache": "jest --no-cache", //清除缓存
+  "watch": "jest --watchAll", //实时监听
+  "coverage": "jest --coverage", //生成覆盖测试文档
+  "verbose": "npx jest --verbose" //显示测试描述
+}
+```
+
+## 四、基础测试
+
+### 4.1 对象等值测试
+
+```js
+describe("对象测试", () => {
+  it("是否同一个对象", () => {
+    const foo = { a: 1 };
+    expect(foo).toBe(foo);
+  });
+
+  it("对象值是否相等", () => {
+    expect({ a: 1, foo: { b: 2 } }).toEqual({ a: 1, foo: { b: 2 } });
+  });
+
+  test("对象赋值", () => {
+    const data = { one: 1 };
+    data["two"] = 2;
+    expect(data).toEqual({ one: 1, two: 2 });
+  });
+});
+```
+
+### 4.2 异步测试
+
+异步测试脚本执行完，单元测试就结束了，如果需要延时才能断言的结果，单元测试函数需要设置 done 形参，在定时回调函数中调用，显示的通过单元测试已完成。
+
+```js
+describe("异步操作测试", () => {
+  function foo(callback) {
+    console.log("foo...");
+    setTimeout(() => {
+      callback && callback();
+    }, 1000);
+  }
+  it("异步测试", (done) => {
+    function bar() {
+      console.log("bar..");
+      done();
+    }
+    foo(bar);
+  });
+});
+```
+
+### 4.3 定时器测试（异步测试）及断言
+
+基于 jest 提供的两个方法 jest.useFakeTimers 和 jest.runAllTimers 可以更优雅的对延时功能的测试。
+
+```js
+describe("定时器相关测试", () => {
+  // 开启定时函数模拟
+  jest.useFakeTimers();
+
+  function foo(callback) {
+    console.log("foo...");
+    setTimeout(() => {
+      callback && callback();
+    }, 1000);
+  }
+  it("断言异步测试", () => {
+    //创建mock函数，用于断言函数被执行或是执行次数的判断
+    const callback = jest.fn();
+    foo(callback);
+    expect(callback).not.toBeCalled();
+    //快进，使所有定时器回调
+    jest.runAllTimers();
+    expect(callback).toBeCalled();
+  });
+});
+```
+
+五、Vue 测试
+5.1 安装 unit-jest
+mount 和 shallowMount 的区别
+
+- shallowMount 只挂载指定组件，不挂载子组件
+- mount 挂载所有组件
+  Vue 的渲染机制 默认情况下 Vue 会异步地批量执行更新 (在下一轮 tick)，
+  以避免不必要的 DOM 重绘或者是观察者计算
+
+## src/utils/auth.spec.js
+
+练习写了一个 auth 的测试内容
+
+## jest.config.js
+
+添加对 jest 的配置
+
+```js
+module.exports = {
+  preset: "@vue/cli-plugin-unit-jest",
+  testMatch: ["**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"],
+  testURL: "http://localhost/",
+  collectCoverage: process.env.COVERAGE === " true",
+  collectCoverageFrom: ["srx/**/*.{js,vue}", "!**/node_modules/**"],
+};
+```
+
+## tests/functions.spec.js
+## src/function.js
+
+练习内容
+
+

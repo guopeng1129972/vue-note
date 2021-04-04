@@ -3,9 +3,7 @@ import { notification } from "ant-design-vue";
 
 function request(options) {
   return axios(options)
-    .then((res) => {
-      return res;
-    })
+c
     .catch((error) => {
       window.myerror = error;
       const {
