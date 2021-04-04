@@ -1202,8 +1202,33 @@ module.exports = {
 ```
 
 ## tests/functions.spec.js
+
 ## src/function.js
 
 练习内容
 
+# 52 | 如何发布组件到 npm
 
+## 切换源文件的 nrm
+
+```bash
+npm install -g nrm
+nrm use cnpm
+```
+
+# 53 | 结课测试&GitHub 相关生态应用（持续集成、单测覆盖率、文档发布、issue 管理）
+
+## CI 持续集成
+
+## 单侧覆盖率
+
+## 文档管理
+
+> - github
+> - gitee
+
+## issue 管理
+
+> - issue-helper
+
+完
