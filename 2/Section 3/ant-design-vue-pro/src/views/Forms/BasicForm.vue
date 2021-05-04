@@ -10,7 +10,6 @@
         @change="handleFormLayoutChange"
       >
         <a-radio-button value="horizontal"> Horizontal </a-radio-button>
-        <a-radio-button value="vertical"> Vertical </a-radio-button>
         <a-radio-button value="inline"> Inline </a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -77,12 +76,10 @@ export default {
     },
   },
   mounted() {
-    setInterval(() => {
-      // 设置值用 api的 this.form.setFieldsValue({key:value})
-      this.form.setFieldsValue({
-        fieldA: `hello ${Math.floor(Math.random() * 100)}`,
-      });
-    }, 2000);
+    // 设置值用 api的 this.form.setFieldsValue({key:value})
+    this.form.setFieldsValue({
+      fieldA: `11`,
+    });
   },
   methods: {
     handleFormLayoutChange(e) {

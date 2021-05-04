@@ -1,9 +1,9 @@
 <template>
-  <div style="width: 200px">
+  <div style="width: 100%">
     <a-menu
       :selectedKeys="selectedKeys"
       :openKeys.sync="openKeys"
-      mode="inline"
+      :mode="navStyle"
       :theme="theme"
     >
       <template v-for="item in menuData">
@@ -36,6 +36,12 @@ export default {
     collapsed: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    navStyle() {
+      let navLayout = this.$route.query.navLayout;
+      return navLayout === "left" ? "inline" : "horizontal";
     },
   },
   watch: {

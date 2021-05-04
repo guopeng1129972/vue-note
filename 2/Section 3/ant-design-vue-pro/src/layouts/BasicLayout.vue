@@ -2,14 +2,17 @@
   <div :class="[`nav-theme-${navTheme}`, `nav-layout-${navLayout}`]">
     <a-layout id="components-layout-demo-side" style="min-height: 100vh">
       <a-layout-sider
-        v-if="navLayout === 'left'"
         :theme="navTheme"
         :trigger="null"
         v-model="collapsed"
         collapsible
       >
         <div class="logo">Ant Design Vue Pro</div>
-        <SiderMenu :theme="navTheme" :collapsed="collapsed" />
+        <SiderMenu
+          :theme="navTheme"
+          :navLayout="navLayout"
+          :collapsed="collapsed"
+        />
       </a-layout-sider>
       <a-layout>
         <a-layout-header style="background: #fff; padding: 0">
