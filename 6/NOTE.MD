@@ -26,3 +26,6 @@ effect(() => {
 a.value = 20;
 // console 20 30
 ```
+
+## 使用视图（view）方法进行显示
+1. 在console中修改a.value就会触发视图的更新
